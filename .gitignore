@@ -1,2 +1,23 @@
 .env
 **/.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+*/.venv/
+
+# OS-specific stuff
+.DS_Store
+.vscode/
+
+# Dependency directories
+pip-wheel-metadata/
+
+# IDE-specific files (e.g. PyCharm)
+.idea/

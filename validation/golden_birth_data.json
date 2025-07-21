@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Dallas, Texas, USA",
+    "date": "1995-05-18",
+    "time": "09:30:00",
+    "latitude": 32.7767,
+    "longitude": -96.808891,
+    "timezone": "America/Los_Angeles"
+  },
+  {
+    "name": "Sydney, Australia (Southern Hemisphere)",
+    "date": "1985-04-15",
+    "time": "18:00:00",
+    "latitude": -33.8688,
+    "longitude": 151.2093,
+    "timezone": "Australia/Sydney"
+  },
+  {
+    "name": "London, UK",
+    "date": "2001-07-23",
+    "time": "03:45:00",
+    "latitude": 51.5072,
+    "longitude": -0.1276,
+    "timezone": "Europe/London"
+  }
+]
