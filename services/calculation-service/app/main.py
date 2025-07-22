@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 from dotenv import load_dotenv
-import traceback  # <-- IMPORT THE TRACEBACK MODULE
+import traceback  
 
 from .schemas import ChartRequest, CalculatedChart
 from .astrologer_api import AstrologerAPIClient, UpstreamServiceError

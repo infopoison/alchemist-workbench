@@ -60,7 +60,7 @@ class AstrologerAPIClient:
         async with httpx.AsyncClient() as client:
             try:
                 print(f"[{self.__class__.__name__}] Sending payload to external API: {json.dumps(api_payload, indent=2)}")
-
+                print(f"[{self.__class__.__name__}] Full URL being requested: {self.base_url + natal_chart_endpoint}") # ADD THIS LINE
                 response = await client.post(
                     self.base_url + natal_chart_endpoint,
                     json=api_payload,
@@ -188,7 +188,7 @@ class AstrologerAPIClient:
                 print(f"Error mapping HouseCusp for '{house_key_raw}': Missing key {e}. Data: {house_data}")
             except Exception as e:
                 print(f"Unexpected error mapping HouseCusp for '{house_key_raw}': {e}. Data: {house_data}")
-                
+
         aspects = []
         # Aspects are directly under the root of the API response, not under 'data'
         for aspect_data in data.get('aspects', []):

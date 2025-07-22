@@ -1,0 +1,9 @@
+{
+  "name": "Test Subject",
+  "city": "Austin",
+  "date": "1990-07-21",
+  "time": "12:00:00",
+  "latitude": 30.2672,
+  "longitude": -97.7431,
+  "timezone": "America/Chicago"
+}
