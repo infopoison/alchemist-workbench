@@ -182,54 +182,52 @@ async def get_valences(request_data: ValenceRequest, request: Request):
 async def get_manifestations(request_data: ManifestationRequest, request: Request):
     """
     **Stage 2 of Synthesis:** Generates detailed manifestations for a chosen valence
-    across six key life areas, making concurrent calls to the LLM for efficiency.
+    for a single, specified life area.
     """
     prompt_assembler = request.app.state.prompt_assembler
     openai_client = request.app.state.openai_client
 
-    life_areas = [
-        "psychological_patterns", "relational_dynamics", "occupational_arenas",
-        "creative_expression", "health_and_wellness", "financial_style", "leisure_and_hobbies"
-    ]
-
-    async def fetch_manifestation_for_area(life_area: str):
-        """Helper coroutine to assemble prompt and call LLM for one life area."""
-        try:
-            prompt = prompt_assembler.assemble_manifestation_prompt(
-                components_input=[c.dict() for c in request_data.components],
-                chosen_valence=request_data.chosen_valence,
-                life_area=life_area
-            )
-            llm_response = openai_client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[{"role": "user", "content": prompt}],
-                response_format={"type": "json_object"}
-            )
-            response_content = llm_response.choices[0].message.content
-            return life_area, json.loads(response_content)
-        except (json.JSONDecodeError, OpenAIError) as e:
-            # If one call fails, return an error state for that area
-            print(f"Error fetching manifestation for {life_area}: {e}")
-            return life_area, {life_area: []} # Return empty list on failure
-
     try:
-        # Create and run all LLM calls concurrently
-        tasks = [fetch_manifestation_for_area(area) for area in life_areas]
-        results = await asyncio.gather(*tasks)
+        # Assemble the prompt for the specific life area provided in the request
+        prompt = prompt_assembler.assemble_manifestation_prompt(
+            components_input=[c.dict() for c in request_data.components],
+            chosen_valence=request_data.chosen_valence,
+            life_area=request_data.life_area
+        )
 
-        # Process the results into a single response dictionary
-        manifestations = {area: data.get(area, []) for area, data in results}
+        # Make a single call to the LLM
+        llm_response = await asyncio.to_thread(
+            openai_client.chat.completions.create,
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}],
+            response_format={"type": "json_object"}
+        )
+        
+        response_content = llm_response.choices[0].message.content
+        manifestation_data = json.loads(response_content)
 
+        # The key in the LLM's response will match the requested life_area.
+        # We extract the list of patterns from that key.
+        manifestations_list = manifestation_data.get(request_data.life_area, [])
+
+        # Return the simplified response object
         return ManifestationResponse(
-            **manifestations,
+            manifestations=manifestations_list,
             engine_metadata=EngineMetadata(
                 interpretive_engine="OpenAI_GPT-4o-mini_2024-07-22"
             )
         )
-    except (ValueError) as e:
+    except (ComponentNotFoundError, UpstreamServiceError, ValueError) as e:
         raise e
+    except OpenAIError as e:
+        if "rate limit" in str(e):
+            raise SynthesisRateLimitError("The synthesis engine is experiencing high demand.")
+        if "content management policy" in str(e):
+            raise SynthesisContentError("The interpretation could not be generated due to a content policy violation.")
+        raise UpstreamServiceError(f"An error occurred with the synthesis engine: {e}")
+    except json.JSONDecodeError:
+        raise BadLLMResponseError("The synthesis engine returned a malformed response.")
     except Exception as e:
-        # Catch any other unexpected errors during the process
-        print(f"An unexpected error occurred during manifestation gathering: {e}")
+        print(f"An unexpected error occurred during manifestation generation: {e}")
         traceback.print_exc()
-        raise HTTPException(status_code=500, detail="Failed to generate all manifestations.")
+        raise HTTPException(status_code=500, detail="Failed to generate manifestations.")

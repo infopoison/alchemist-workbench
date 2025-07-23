@@ -1,14 +1,14 @@
 {
   "components": [
     { "type": "planet", "id": "sun" },
-    { "type": "zodiac_sign", "id": "aries" }
+    { "type": "zodiac_sign", "id": "taurus" }
   ],
   "birth_data": {
-    "city": "Los Angeles",
-    "date": "1990-10-28",
-    "time": "09:30:00",
-    "latitude": 34.0522,
-    "longitude": -118.2437,
-    "timezone": "America/Los_Angeles"
+    "city": "Dallas",
+    "date": "1995-05-18",
+    "time": "17:41:00",
+    "latitude": 32.779167,
+    "longitude": -96.8088,
+    "timezone": "America/Chicago"
   }
 }

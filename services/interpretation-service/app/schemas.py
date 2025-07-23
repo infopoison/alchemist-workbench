@@ -83,28 +83,17 @@ class ManifestationRequest(BaseModel):
     """Request to generate detailed life-area manifestations for a chosen valence."""
     components: List[ComponentInput]
     chosen_valence: Valence
+    life_area: Literal[
+        "psychological_patterns", "relational_dynamics", "occupational_arenas",
+        "creative_expression", "health_and_wellness", "financial_style", "leisure_and_hobbies"
+    ] = Field(..., description="The specific life area to generate manifestations for.")
     birth_data: Optional[BirthDataInput] = None
 
-class LifeAreaPattern(BaseModel):
-    """A generic schema for a single manifestation within a life area."""
-    pattern_name: str = Field(..., example="Strategic Courage", description="A short, evocative title for the pattern.")
-    description: str = Field(..., example="A 1-2 sentence explanation of the pattern.", description="A detailed description of the manifestation.")
-    type: Literal["strength", "shadow"] = Field(..., description="Classifies the manifestation as either a 'strength' or a 'shadow'.")
-
 class ManifestationResponse(BaseModel):
-    """
-    A comprehensive response containing the detailed manifestations of a chosen
-    valence across multiple domains of life.
-    """
-    synthesis_id: uuid.UUID = Field(default_factory=uuid.uuid4)
-    psychological_patterns: List[LifeAreaPattern]
-    relational_dynamics: List[LifeAreaPattern]
-    occupational_arenas: List[LifeAreaPattern]
-    creative_expression: List[LifeAreaPattern]
-    health_and_wellness: List[LifeAreaPattern]
-    financial_style: List[LifeAreaPattern]
-    leisure_and_hobbies: List[LifeAreaPattern]
+    """A response containing a list of manifestations for a single life area."""
+    manifestations: List[Dict[str, Any]]
     engine_metadata: EngineMetadata
+
 
 # =============================================================================
 # V. DEPRECATED SCHEMAS
