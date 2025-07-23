@@ -1,0 +1,18 @@
+{
+  "synthesis_id": "ea70163c-1f7c-42c4-8e27-c2d1babbd2b9",
+  "chosen_valence": {
+    "archetype": "The Articulate Communicator",
+    "description": "Expresses thoughts and ideas with clarity and precision..."
+  },
+  "components": [
+    {
+      "type": "planet",
+      "id": "sun"
+    },
+    {
+      "type": "zodiac_sign",
+      "id": "aries"
+    }
+  ],
+  "life_area": "occupational_arenas"
+}

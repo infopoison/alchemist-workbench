@@ -1,6 +1,7 @@
 # services/interpretation-service/app/clients.py
 
 import httpx
+import asyncio
 from typing import Dict, Any, List, Optional
 
 # Import custom exceptions from main.py (assuming they are defined in app/main.py or a shared exceptions.py)
@@ -28,40 +29,55 @@ class LexiconServiceClient:
     """
     def __init__(self, base_url: str):
         self.base_url = base_url
-        self._client = httpx.AsyncClient(base_url=base_url)
+        # Add a timeout to the client
+        self._client = httpx.AsyncClient(base_url=base_url, timeout=5.0)
+
 
     async def get_component_detail(self, component_type: str, component_id: str) -> Dict[str, Any]:
-        """
-        Retrieves the detailed definition for a single astrological component from the Lexicon Service.
-        Raises ComponentNotFoundError if the component is not found (404).
-        """
-        try:
-            response = await self._client.get(f"/components/{component_type}/{component_id}")
-            response.raise_for_status() # Raises HTTPStatusError for 4xx/5xx responses
-            return response.json()
-        except httpx.HTTPStatusError as e:
-            if e.response.status_code == 404:
-                # Attempt to parse component not found from Lexicon if available
-                error_detail = e.response.json().get("detail", {})
-                if error_detail.get("error", {}).get("code") == "component_not_found":
-                    # Re-raise our custom ComponentNotFoundError
-                    raise ComponentNotFoundError(
-                        component_id=component_id, # Can try to extract from original error message if needed
-                        component_type=component_type
-                    ) from e
-            # For other HTTP errors from Lexicon, raise a generic UpstreamServiceError
-            raise UpstreamServiceError(f"Lexicon Service returned an error: {e.response.status_code} - {e.response.text}") from e
-        except httpx.RequestError as e:
-            # Network-level errors (DNS, connection refused, timeout)
-            raise UpstreamServiceError(f"Network error contacting Lexicon Service: {e}") from e
-        except Exception as e:
-            # Catch any other unexpected errors
-            raise UpstreamServiceError(f"An unexpected error occurred in LexiconServiceClient: {e}") from e
+            """Fetches detailed data for a single component from the Lexicon Service with a retry mechanism."""
+            # Fix the pluralization for zodiac_signs
+            plural_component_types = {
+                "planet": "planets",
+                "zodiac_sign": "zodiac_signs",
+                "node": "nodes", # Add other component types as needed
+                "house": "houses", 
+                "dynamic": "dynamics",
+                "angle": "angles"
 
-    async def aclose(self):
-        """Closes the underlying httpx client session."""
-        await self._client.aclose()
+            }
+            component_type_for_request = plural_component_types.get(component_type, component_type)
 
+
+            url = f"/components/{component_type_for_request}/{component_id}"
+            max_retries = 3
+            for attempt in range(max_retries):
+                try:
+                    response = await self._client.get(url)
+                    response.raise_for_status() # Raises HTTPStatusError for 4xx/5xx responses
+                    return response.json()
+                except httpx.HTTPStatusError as e:
+                    # This block handles 4xx/5xx responses, so no retry is needed.
+                    # The server responded, but with an error status.
+                    try:
+                        error_detail = e.response.json()
+                    except json.JSONDecodeError:
+                        error_detail = {"error": {"message": e.response.text}}
+
+                    if error_detail.get("error", {}).get("code") == "component_not_found":
+                        raise ComponentNotFoundError(f"Component '{component_id}' of type '{component_type}' not found.") from e
+                    else:
+                        raise UpstreamServiceError(f"Lexicon Service returned an error: {e.response.status_code} - {error_detail.get('error', {}).get('message')}") from e
+
+                except httpx.RequestError as e:
+                    # This block handles network-level errors, where a retry is appropriate.
+                    if attempt < max_retries - 1:
+                        print(f"⚠️ Attempt {attempt + 1} failed for {url}. Retrying...")
+                        await asyncio.sleep(1) # Wait for 1 second before retrying
+                    else:
+                        raise UpstreamServiceError(f"Network error contacting Lexicon Service: {e}") from e
+                except Exception as e:
+                    # Catch any other unexpected errors
+                    raise UpstreamServiceError(f"An unexpected error occurred in LexiconServiceClient: {e}") from e
 
 class CalculationServiceClient:
     """
