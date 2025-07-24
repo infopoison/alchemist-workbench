@@ -1,0 +1,818 @@
+{
+  "planets": [
+    {
+      "id": "sun",
+      "name": "The Sun",
+      "archetype": "The Hero",
+      "display_content": {
+        "principle": "The Principle of Identity, Vitality, and Conscious Will",
+        "core_concept": "The Sun represents the core of the personality, the central organizing principle around which all other psychic functions, symbolized by the planets, revolve. It is the conscious expression of self, the ego identity, and the personal will that we use to navigate the world[cite: 15]. It is the vital life force and the engine of the personality[cite: 18]."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Identity", "ego", "self-expression", "vitality", "power", "consciousness", "will", "creativity", "purpose", "confidence", "authority", "well-being"
+        ],
+        "comparative_dyads": {
+          "vs_moon": "Conscious will and purpose vs. Unconscious instinct and need[cite: 53]. The engine vs. the emotional fuel[cite: 54]."
+        }
+      }
+    },
+    {
+      "id": "moon",
+      "name": "The Moon",
+      "archetype": "The Mother",
+      "display_content": {
+        "principle": "The Principle of Emotional Response, Instinct, and Unconscious Needs",
+        "core_concept": "The Moon symbolizes the most foundational and instinctual dimension of the psyche[cite: 69]. It governs our emotional world, our immediate and unthinking reactions, and our deepest, often unconscious, needs[cite: 70]. It describes what we need to feel safe, secure, and nurtured[cite: 70]."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Emotions", "instincts", "unconscious", "needs", "security", "home", "family", "the past", "memory", "habits", "moods", "receptivity", "nurturing"
+        ],
+        "comparative_dyads": {
+          "vs_sun": "Unconscious instinct and need vs. Conscious will and purpose[cite: 53]. The emotional fuel vs. the engine[cite: 54].",
+          "vs_venus": "Emotional security, belonging, and nurturing (The Mother) vs. Social connection, pleasure, and desire (The Lover)[cite: 177, 181, 483]."
+        }
+      }
+    },
+    {
+      "id": "mercury",
+      "name": "Mercury",
+      "archetype": "The Messenger",
+      "display_content": {
+        "principle": "The Principle of Communication, Intellect, and Mediation",
+        "core_concept": "Mercury is the archetype of the mind, governing the faculties of communication, thought, and intellect[cite: 110]. It represents the process of making connections: linking ideas, gathering information, and mediating between different perspectives[cite: 111]. It is a neutral principle of intellectual processing and articulation[cite: 112]."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Communication", "intellect", "thought", "language", "learning", "information", "reason", "logic", "curiosity", "adaptability", "mediation", "connections"
+        ],
+        "comparative_dyads": {
+          "vs_uranus": "Personal, rational, linear mind vs. Transpersonal, intuitive, non-linear 'Universal Mind'[cite: 342, 483]. The higher octave of intellect[cite: 483]."
+        }
+      }
+    },
+    {
+      "id": "venus",
+      "name": "Venus",
+      "archetype": "The Lover",
+      "display_content": {
+        "principle": "The Principle of Attraction, Value, and Social Harmony",
+        "core_concept": "Venus is the archetype of attraction, relationship, and pleasure[cite: 147]. It governs our values, aesthetics, and the drive for social and romantic connection[cite: 147]. While a principle of receptivity, its domain also includes the 'darker angel' of desire, encompassing jealousy, overconsumption, and the inherent vulnerability and risk in the pursuit of pleasure[cite: 63, 64, 150]."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Love", "beauty", "harmony", "relationship", "values", "attraction", "pleasure", "art", "sensuality", "social connection", "diplomacy", "money", "desire", "jealousy", "risk", "intensity", "overconsumption", "taboo desire"
+        ],
+        "comparative_dyads": {
+          "vs_moon": "Social pleasure and desire (The Lover) vs. Emotional security and nurturing (The Mother)[cite: 181, 483].",
+          "vs_jupiter": "Interpersonal harmony and tangible assets vs. Collective expansion and intangible faith[cite: 483].",
+          "vs_mars": "Satisfaction and pleasure vs. Action and assertion[cite: 170, 171]."
+        }
+      }
+    },
+    {
+      "id": "mars",
+      "name": "Mars",
+      "archetype": "The Warrior",
+      "display_content": {
+        "principle": "The Principle of Action, Desire, and Assertion",
+        "core_concept": "Mars is the archetype of the warrior, representing the principle of action, assertion, and directed energy[cite: 192, 193]. It governs our drive, motivation, desire, and will to achieve our goals[cite: 193]. Its expression can range from healthy assertiveness to aggression and conflict[cite: 195]."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Action", "desire", "assertion", "aggression", "drive", "motivation", "survival", "energy", "courage", "conflict", "anger", "will", "survival", "competition"
+        ],
+        "comparative_dyads": {
+          "vs_venus": "Action and assertion vs. Satisfaction and pleasure[cite: 170, 171].",
+          "vs_saturn": "Acute action and immediate force (Heat) vs. Chronic structure and enduring pressure (Cold)[cite: 483].",
+          "vs_pluto": "Personal, ego-driven will (The soldier fighting the battle) vs. Transpersonal, evolutionary force (The historical force driving the war)[cite: 228, 229, 231, 483]."
+        }
+      }
+    },
+    {
+      "id": "jupiter",
+      "name": "Jupiter",
+      "archetype": "The Guru",
+      "display_content": {
+        "principle": "The Principle of Expansion, Faith, and Wisdom",
+        "core_concept": "Jupiter is the 'Great Benefic,' the archetype of expansion, growth, and good fortune[cite: 234]. It represents the drive to grow beyond our current limits, whether through learning, travel, or spiritual seeking[cite: 235]. Jupiter governs faith, optimism, hope, and the search for meaning[cite: 236]."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Expansion", "growth", "optimism", "faith", "wisdom", "luck", "fortune", "abundance", "higher learning", "philosophy", "religion", "travel", "generosity"
+        ],
+        "comparative_dyads": {
+          "vs_saturn": "Expansion, transcendence of boundaries, and optimism vs. Contraction, building of boundaries, and realism[cite: 262, 263, 295].",
+          "vs_venus": "Collective expansion and intangible faith vs. One-to-one connection and tangible assets[cite: 483]."
+        }
+      }
+    },
+    {
+      "id": "saturn",
+      "name": "Saturn",
+      "archetype": "The Taskmaster",
+      "display_content": {
+        "principle": "The Principle of Limitation, Structure, and Discipline of reality.",
+        "core_concept": "Saturn is the archetype of structure, limitation, and reality[cite: 275]. It is the 'planetary taskmaster,' representing discipline, responsibility, and the consequences of our actions[cite: 275]. While often perceived as difficult, its function is essential for manifestation and building lasting structures[cite: 278]."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Structure", "limitation", "discipline", "responsibility", "reality", "time", "karma", "fear", "ambition", "authority", "tradition", "maturity", "boundaries"
+        ],
+        "comparative_dyads": {
+          "vs_jupiter": "Contraction, building of boundaries, and realism vs. Expansion, transcendence of boundaries, and optimism[cite: 262, 263, 295].",
+          "vs_mars": "Chronic structure and enduring pressure (Cold) vs. Acute action and immediate force (Heat)[cite: 483].",
+          "vs_neptune": "Boundaries, form, and definition (The wall) vs. Boundlessness, formlessness, and dissolution (The ocean)[cite: 483].",
+          "vs_pluto": "Mastering the rules of known reality vs. Being transformed by a fated, non-negotiable, soul-level game[cite: 308, 311, 313]."
+        }
+      }
+    },
+    {
+      "id": "uranus",
+      "name": "Uranus",
+      "archetype": "The Great Awakener",
+      "display_content": {
+        "principle": "The Principle of Revolution, Liberation, and Sudden Change, with innovation as a core principle.",
+        "core_concept": "Uranus is the 'Great Awakener,' the archetype of revolution, innovation, and sudden, unexpected change[cite: 316]. It represents the drive for freedom, individuality, and liberation from all that is restrictive, traditional, and outdated[cite: 317]. It is the principle that shatters the status quo to create a new paradigm[cite: 319]."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Revolution", "change", "liberation", "freedom", "innovation", "rebellion", "shock", "awakening", "disruption", "the unexpected", "technology", "genius", "individuality"
+        ],
+        "comparative_dyads": {
+          "vs_mercury": "Transpersonal, intuitive, non-linear 'Universal Mind' vs. Personal, rational, linear mind[cite: 342, 483]. The higher octave of intellect[cite: 483]."
+        }
+      }
+    },
+    {
+      "id": "neptune",
+      "name": "Neptune",
+      "archetype": "The Mystic",
+      "display_content": {
+        "principle": "The Principle of Transcendence, Illusion, and Spiritual Union",
+        "core_concept": "Neptune is the archetype of transcendence, representing the deep human longing to dissolve boundaries and merge with something larger than the self[cite: 352]. Its domain is the formless and intangible: spirituality, mysticism, dreams, and imagination[cite: 352]. It governs compassion and universal love, but also illusion, confusion, and escapism[cite: 353]."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Transcendence", "spirituality", "illusion", "imagination", "dreams", "mysticism", "compassion", "unity", "dissolution", "fantasy", "confusion", "escapism", "artistry"
+        ],
+        "comparative_dyads": {
+          "vs_venus": "Transpersonal, universal love (compassion) vs. Personal love and values[cite: 380].",
+          "vs_saturn": "Boundlessness, formlessness, and dissolution (The ocean) vs. Boundaries, form, and definition (The wall)[cite: 483]."
+        }
+      }
+    },
+    {
+      "id": "pluto",
+      "name": "Pluto",
+      "archetype": "The Great Transformer",
+      "display_content": {
+        "principle": "The Principle of Transformation, Power, and Rebirth",
+        "core_concept": "Pluto is the archetype of deep, permanent transformation[cite: 391]. It represents the evolutionary forces of death and rebirth, destruction and regeneration[cite: 391]. Pluto governs the underworld of the psyche: the unconscious, primordial instincts, trauma, and all that is hidden, taboo, and repressed[cite: 392]."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Transformation", "power", "death", "rebirth", "regeneration", "the unconscious", "the underworld", "intensity", "obsession", "compulsion", "trauma", "secrets", "evolution"
+        ],
+        "comparative_dyads": {
+          "vs_mars": "Transpersonal, evolutionary force (The historical force driving the war) vs. Personal, ego-driven will (The soldier fighting the battle)[cite: 229, 231, 483].",
+          "vs_saturn": "Being transformed by a fated, non-negotiable, soul-level game vs. Mastering the rules of known reality[cite: 311, 313]."
+        }
+      }
+    }
+  ],
+  "houses": [
+    {
+      "id": "1",
+      "name": "The First House",
+      "archetype": "The Helm of Being",
+      "display_content": {
+        "principle": "The Principle of Identity, Persona, and Physical Embodiment",
+        "core_concept": "The First House represents the moment of incarnation, the primary filter of identity through which all of life is experienced. It defines the physical body, the persona, and the fundamental approach to life, signifying the initial spark of individual consciousness."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "The Self", "identity", "persona", "physical body", "appearance", "vitality", "beginnings", "initiatives", "personal outlook", "character", "self-projection"
+        ],
+        "comparative_dyads": {
+          "vs_7th_house": "The Self, personal identity, and how you project yourself vs. The Other, committed partnerships, and how you relate."
+        }
+      }
+    },
+    {
+      "id": "2",
+      "name": "The Second House",
+      "archetype": "The Gates of Substance",
+      "display_content": {
+        "principle": "The Principle of Value, Resources, and Self-Worth",
+        "core_concept": "Following the emergence of self, the Second House establishes and secures that self in the material world. It is the domain of personal resources, assets, and values, both tangible (money, possessions) and intangible (talents, self-worth)."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Money", "possessions", "resources", "assets", "income", "talents", "self-worth", "self-esteem", "values", "security", "substance", "sensuality"
+        ],
+        "comparative_dyads": {
+          "vs_8th_house": "Your personal resources and values vs. Shared resources, inheritance, and the values of others."
+        }
+      }
+    },
+    {
+      "id": "3",
+      "name": "The Third House",
+      "archetype": "The Realm of the Goddess",
+      "display_content": {
+        "principle": "The Principle of Communication, Learning, and Immediate Environment",
+        "core_concept": "The Third House connects the individual to their immediate environment through the concrete mind. It governs perception, learning, and communication, as well as daily routines, short trips, and relationships with siblings and neighbors."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Communication", "the mind", "learning", "early education", "language", "siblings", "neighbors", "local community", "short trips", "daily routines", "information"
+        ],
+        "comparative_dyads": {
+          "vs_9th_house": "The concrete, lower mind and daily environment vs. The abstract, higher mind and expanded horizons."
+        }
+      }
+    },
+    {
+      "id": "4",
+      "name": "The Fourth House",
+      "archetype": "The Subterranean Place",
+      "display_content": {
+        "principle": "The Principle of Foundation, Roots, and Inner Security",
+        "core_concept": "The Fourth House represents our foundation. It is the root of our being, governing home, family, ancestry, and our deepest emotional core. As the lowest point of the chart, it is the most private and subjective domain where the inner self resides."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Home", "family", "roots", "ancestry", "parents", "childhood", "foundations", "emotional security", "private life", "endings", "the subconscious"
+        ],
+        "comparative_dyads": {
+          "vs_10th_house": "Your private life, inner world, and family foundation vs. Your public life, career, and social standing."
+        }
+      }
+    },
+    {
+      "id": "5",
+      "name": "The Fifth House",
+      "archetype": "The Garden of Good Fortune",
+      "display_content": {
+        "principle": "The Principle of Creativity, Pleasure, and Self-Expression",
+        "core_concept": "Emerging from the private sanctuary of the 4th House, the Fifth House is the domain of spontaneous, joyful self-expression. It is the stage for creativity, romance, play, and procreation, representing the heart's desire to radiate its unique essence outward."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Creativity", "self-expression", "romance", "love affairs", "pleasure", "joy", "play", "hobbies", "children", "performance", "artistic talents", "risk-taking"
+        ],
+        "comparative_dyads": {
+          "vs_11th_house": "Personal creativity and individual joy vs. Collective aspirations and group contributions."
+        }
+      }
+    },
+    {
+      "id": "6",
+      "name": "The Sixth House",
+      "archetype": "The Crucible of Bad Fortune",
+      "display_content": {
+        "principle": "The Principle of Service, Health, and Daily Routines",
+        "core_concept": "The Sixth House confronts the practical realities and imperfections of daily life. It is the domain of work, service, health, and routine, governing the necessary labor, maintenance, and adjustments required to function effectively in the world."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Work", "service", "duty", "health", "illness", "daily routines", "habits", "employees", "pets", "skills", "craft", "analysis", "purification", "adjustment"
+        ],
+        "comparative_dyads": {
+          "vs_12th_house": "Daily work and conscious maintenance of the body vs. Unseen matters and the dissolution of the self."
+        }
+      }
+    },
+    {
+      "id": "7",
+      "name": "The Seventh House",
+      "archetype": "The Setting Place",
+      "display_content": {
+        "principle": "The Principle of Partnership, Balance, and Relationship",
+        "core_concept": "The Seventh House marks the Descendant, where the self (1st House) directly meets the 'other.' It is the primary domain of one-to-one relationships and committed partnerships, including marriage, business contracts, and open enemies."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Partnerships", "marriage", "relationships", "the \"other\"", "commitment", "contracts", "collaboration", "cooperation", "equality", "balance", "diplomacy", "open enemies"
+        ],
+        "comparative_dyads": {
+          "vs_1st_house": "The Other, committed partnerships, and how you relate vs. The Self, personal identity, and how you project yourself."
+        }
+      }
+    },
+    {
+      "id": "8",
+      "name": "The Eighth House",
+      "archetype": "The Idle Place",
+      "display_content": {
+        "principle": "The Principle of Transformation, Intimacy, and Shared Resources",
+        "core_concept": "The Eighth House delves into the complex consequences of merging with another. It is the domain of shared resources, deep intimacy, and the profound cycles of death and rebirth. It governs joint finances, debts, and inheritances, as well as secrets and power dynamics."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Shared resources", "other people's money", "inheritance", "taxes", "debt", "sex", "intimacy", "power", "control", "secrets", "psychology", "crisis", "transformation"
+        ],
+        "comparative_dyads": {
+          "vs_2nd_house": "Shared resources, inheritance, and the values of others vs. Your personal resources and values."
+        }
+      }
+    },
+    {
+      "id": "9",
+      "name": "The Ninth House",
+      "archetype": "The Place of God",
+      "display_content": {
+        "principle": "The Principle of Meaning, Wisdom, and Expansion of Consciousness",
+        "core_concept": "The Ninth House seeks to find meaning in experience. It is the domain of the higher mind, the quest for wisdom, and the expansion of consciousness through long-distance travel, higher education, philosophy, and religion."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Higher education", "philosophy", "religion", "spirituality", "belief systems", "long-distance travel", "foreign cultures", "law", "ethics", "wisdom", "truth", "meaning", "quests"
+        ],
+        "comparative_dyads": {
+          "vs_3rd_house": "The abstract, higher mind and expanded horizons vs. The concrete, lower mind and daily environment."
+        }
+      }
+    },
+    {
+      "id": "10",
+      "name": "The Tenth House",
+      "archetype": "The Place of Action",
+      "display_content": {
+        "principle": "The Principle of Ambition, Public Life, and Legacy",
+        "core_concept": "The Tenth House represents the apex of the chart and is the most public domain. It governs career, reputation, social status, and one's ultimate contribution to the world. It is about one's vocation or 'calling'—the life's work that defines public identity."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Career", "vocation", "profession", "ambition", "goals", "achievement", "success", "reputation", "public image", "social status", "legacy", "authority", "leadership"
+        ],
+        "comparative_dyads": {
+          "vs_4th_house": "Your public life, career, and social standing vs. Your private life, inner world, and family foundation."
+        }
+      }
+    },
+    {
+      "id": "11",
+      "name": "The Eleventh House",
+      "archetype": "The Place of Good Spirit",
+      "display_content": {
+        "principle": "The Principle of Community, Aspiration, and Collective Vision",
+        "core_concept": "The Eleventh House shifts the focus from individual achievement to collective participation. It is the domain of friendships, groups, communities, and networks. It also governs our hopes, wishes, and aspirations for the future, particularly those realized through collaboration."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Friendships", "groups", "community", "networks", "alliances", "hopes", "wishes", "aspirations", "future goals", "humanitarianism", "collective endeavors", "social justice"
+        ],
+        "comparative_dyads": {
+          "vs_5th_house": "Collective aspirations and group contributions vs. Personal creativity and individual joy."
+        }
+      }
+    },
+    {
+      "id": "12",
+      "name": "The Twelfth House",
+      "archetype": "The Place of Bad Spirit",
+      "display_content": {
+        "principle": "The Principle of Transcendence, Dissolution, and the Unconscious",
+        "core_concept": "The Twelfth House is the final chapter, representing endings, dissolution, and the return to the source. It governs the subconscious mind, dreams, secrets, and solitude. It is the domain of self-undoing and hidden enemies, but also of spiritual surrender, compassion, and transcendence."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "The unconscious", "dreams", "secrets", "karma", "past lives", "solitude", "isolation", "confinement", "hidden enemies", "self-sabotage", "karma", "loss", "sacrifice", "compassion", "mysticism"
+        ],
+        "comparative_dyads": {
+          "vs_6th_house": "Unseen matters and the dissolution of the self vs. Daily work and conscious maintenance of the body."
+        }
+      }
+    }
+  ],
+  "zodiac_signs": [
+    {
+      "id": "aries",
+      "name": "Aries",
+      "archetype": "The Primal Spark",
+      "display_content": {
+        "principle": "The Principle of Initiation, Action, and Self-Assertion",
+        "core_concept": "Aries represents the archetypal principle of Initiation. It is the primal, undifferentiated life force breaking forth into being. As the sign of the vernal equinox, it symbolizes the victory of light over darkness and the raw, unmediated will to exist."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Initiation", "Action", "Assertion", "Courage", "Daring", "Pioneering", "Leadership", "Independence", "Spontaneity", "Impulse", "Energy", "Will", "Competition", "Naivete"
+        ],
+        "comparative_dyads": {
+          "vs_opposite_sign": "The assertion of the self (Aries) vs. The balance of relationship with the other (Libra)."
+        }
+      }
+    },
+    {
+      "id": "taurus",
+      "name": "Taurus",
+      "archetype": "The Earthly Foundation",
+      "display_content": {
+        "principle": "The Principle of Embodiment, Stability, and Material Value",
+        "core_concept": "Following the explosive initiation of Aries, Taurus is the archetype of Embodiment and Substantiality. It is the principle that grounds the newly sparked life force, giving it form, stability, and tangible value. It is the archetype of the sensory world and quiet endurance."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Stability", "Security", "Sensuality", "Pleasure", "Value", "Resources", "Substance", "Patience", "Endurance", "Persistence", "Practicality", "Groundedness"
+        ],
+        "comparative_dyads": {
+          "vs_opposite_sign": "Personal resources, tangible value, and self-worth (Taurus) vs. Shared resources, deep intimacy, and transformation (Scorpio)."
+        }
+      }
+    },
+    {
+      "id": "gemini",
+      "name": "Gemini",
+      "archetype": "The Celestial Twins",
+      "display_content": {
+        "principle": "The Principle of Communication, Duality, and Intellect",
+        "core_concept": "Gemini is the archetype of Connection and Duality. It represents the awakening of the rational mind to a world of infinite multiplicity. It seeks to understand the world by naming it, categorizing it, and creating connections between its disparate parts."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Communication", "Duality", "Curiosity", "Intellect", "Information", "Connection", "Versatility", "Adaptability", "Sociability", "Wit", "Logic", "Learning"
+        ],
+        "comparative_dyads": {
+          "vs_opposite_sign": "Gathering concrete data and communicating facts (Gemini) vs. Seeking abstract truth and universal meaning (Sagittarius)."
+        }
+      }
+    },
+    {
+      "id": "cancer",
+      "name": "Cancer",
+      "archetype": "The Primal Waters",
+      "display_content": {
+        "principle": "The Principle of Nurturing, Feeling, and Emotional Security",
+        "core_concept": "Cancer is the archetype of Nurturing and Belonging. As the first water sign, it represents the initiation of feeling and the creation of a protective emotional container. It symbolizes the deep currents of the unconscious, the power of memory, and the instinctual need for security."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Nurturing", "Feeling", "Security", "Home", "Family", "Roots", "Past", "Memory", "Protection", "Tenacity", "Sensitivity", "Empathy", "Belonging"
+        ],
+        "comparative_dyads": {
+          "vs_opposite_sign": "Inner security and private, emotional foundations (Cancer) vs. Outer achievement and public, structural integrity (Capricorn)."
+        }
+      }
+    },
+    {
+      "id": "leo",
+      "name": "Leo",
+      "archetype": "The Radiant Heart",
+      "display_content": {
+        "principle": "The Principle of Creative Self-Expression, Radiance, and Sovereignty",
+        "core_concept": "Leo is the archetype of Creative Self-Expression and Radiance. It is the principle of the individuated ego in its full glory, the heart-centered force that seeks to shine its unique light upon the world and be recognized for it. Ruled by the Sun, Leo symbolizes vitality and leadership."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Self-Expression", "Creativity", "Radiance", "Confidence", "Leadership", "Generosity", "Warmth", "Pride", "Royalty", "Performance", "Playfulness", "Charisma"
+        ],
+        "comparative_dyads": {
+          "vs_opposite_sign": "Personal creative expression and individual radiance (Leo) vs. Collective ideals and humanitarian detachment (Aquarius)."
+        }
+      }
+    },
+    {
+      "id": "virgo",
+      "name": "Virgo",
+      "archetype": "The Sacred Order",
+      "display_content": {
+        "principle": "The Principle of Analysis, Service, and Perfection",
+        "core_concept": "Virgo is the archetype of Perfection, Service, and Analysis. It represents the impulse to analyze, refine, and improve. It is the principle of discernment, the ability to distinguish between the functional and the dysfunctional, and governs the sacred duty of making order out of chaos."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Analysis", "Discernment", "Purity", "Perfection", "Service", "Duty", "Work", "Health", "Healing", "Order", "Detail", "Criticism", "Practicality"
+        ],
+        "comparative_dyads": {
+          "vs_opposite_sign": "Practical discernment and tangible service (Virgo) vs. Universal compassion and spiritual dissolution (Pisces)."
+        }
+      }
+    },
+    {
+      "id": "libra",
+      "name": "Libra",
+      "archetype": "The Harmonious Balance",
+      "display_content": {
+        "principle": "The Principle of Balance, Relationship, and Justice",
+        "core_concept": "Libra is the archetype of Balance, Relationship, and Justice. It marks a pivotal shift from the personal to the interpersonal, initiating the quest for harmony through relationship with the 'other.' It represents the moment of the autumnal equinox, symbolizing a perfect state of balance."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Balance", "Harmony", "Relationship", "Partnership", "Justice", "Fairness", "Equality", "Diplomacy", "Social Grace", "Charm", "Aesthetics", "Peace"
+        ],
+        "comparative_dyads": {
+          "vs_opposite_sign": "The balance of relationship with the other (Libra) vs. The assertion of the self (Aries)."
+        }
+      }
+    },
+    {
+      "id": "scorpio",
+      "name": "Scorpio",
+      "archetype": "The Alchemical Depths",
+      "display_content": {
+        "principle": "The Principle of Transformation, Power, and Regeneration",
+        "core_concept": "Scorpio is the archetype of Transformation and Regeneration. It dives beneath the surface to explore the hidden currents of power, desire, and the unconscious. It is the principle of death and rebirth, the alchemical process that destroys old forms to allow for a more powerful, authentic life to emerge."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Transformation", "Intensity", "Power", "Depth", "Desire", "Passion", "Sexuality", "Death & Rebirth", "Secrets", "The Unconscious", "Investigation", "Control", "Regeneration", "Vengeance"
+        ],
+        "comparative_dyads": {
+          "vs_opposite_sign": "Shared resources, deep intimacy, and transformation (Scorpio) vs. Personal resources, tangible value, and self-worth (Taurus)."
+        }
+      }
+    },
+    {
+      "id": "sagittarius",
+      "name": "Sagittarius",
+      "archetype": "The Far-Reaching Arrow",
+      "display_content": {
+        "principle": "The Principle of Expansion, Meaning, and the Quest for Truth",
+        "core_concept": "Sagittarius is the archetype of Expansion and the Quest for Meaning. It emerges with a boundless desire to explore the outer world and the higher mind. It is the principle of the search for truth, wisdom, and a unifying philosophy. Represented by the Archer, it aims its arrow toward a distant horizon."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Expansion", "Exploration", "Freedom", "Adventure", "The Quest", "Meaning", "Truth", "Wisdom", "Philosophy", "Higher Education", "Travel", "Optimism", "Faith"
+        ],
+        "comparative_dyads": {
+          "vs_opposite_sign": "Seeking abstract truth and universal meaning (Sagittarius) vs. Gathering concrete data and communicating facts (Gemini)."
+        }
+      }
+    },
+    {
+      "id": "capricorn",
+      "name": "Capricorn",
+      "archetype": "The Mountain Summit",
+      "display_content": {
+        "principle": "The Principle of Structure, Mastery, and Integrity",
+        "core_concept": "Capricorn is the archetype of Structure, Mastery, and Integrity. It represents the impulse to give form and tangible structure to wisdom. It is the principle of ambition, discipline, and the patient, determined ascent toward a worldly goal, symbolizing the mastery of both inner and outer worlds."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Structure", "Ambition", "Discipline", "Responsibility", "Mastery", "Achievement", "Integrity", "Authority", "Tradition", "Patience", "Perseverance", "Pragmatism"
+        ],
+        "comparative_dyads": {
+          "vs_opposite_sign": "Outer achievement and public, structural integrity (Capricorn) vs. Inner security and private, emotional foundations (Cancer)."
+        }
+      }
+    },
+    {
+      "id": "aquarius",
+      "name": "Aquarius",
+      "archetype": "The Starry Waters",
+      "display_content": {
+        "principle": "The Principle of Innovation, Liberation, and the Collective",
+        "core_concept": "Aquarius is the archetype of Humanitarianism and Revolution. It represents the impulse to transcend existing societal structures and envision a more perfect, equitable future for the collective. It symbolizes the distribution of knowledge and ideals for the betterment of all humanity."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Innovation", "Revolution", "The Future", "The Collective", "Humanitarianism", "Idealism", "Objectivity", "Intellect", "Detachment", "Unconventionality", "Freedom"
+        ],
+        "comparative_dyads": {
+          "vs_opposite_sign": "Collective ideals and humanitarian detachment (Aquarius) vs. Personal creative expression and individual radiance (Leo)."
+        }
+      }
+    },
+    {
+      "id": "pisces",
+      "name": "Pisces",
+      "archetype": "The Cosmic Ocean",
+      "display_content": {
+        "principle": "The Principle of Transcendence, Compassion, and Universal Consciousness",
+        "core_concept": "Pisces is the twelfth and final archetype, representing Transcendence, Dissolution, and Universal Consciousness. It is the principle of the individual self dissolving back into the cosmic ocean from which it first emerged in Aries. It is the realm of dreams, mysticism, and boundless compassion."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Oneness", "Compassion", "Empathy", "Imagination", "Dreams", "Mysticism", "Spirituality", "Surrender", "Dissolution", "Sensitivity", "Escapism", "Illusion"
+        ],
+        "comparative_dyads": {
+          "vs_opposite_sign": "Universal compassion and spiritual dissolution (Pisces) vs. Practical discernment and tangible service (Virgo)."
+        }
+      }
+    }
+  ],
+  "dynamics": [
+    {
+      "id": "conjunction",
+      "name": "The Conjunction",
+      "archetype": "The Union",
+      "display_content": {
+        "principle": "The Principle of Fusion",
+        "core_concept": "When planets are conjunct, their archetypes merge and act as a single, unified force. Their goals and modes of expression become intertwined, for better or worse. The individual cannot easily separate the two drives."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Fusion", "merging", "unity", "blending", "concentration", "intertwined", "intensification", "new beginning"
+        ],
+        "comparative_dyads": {}
+      }
+    },
+    {
+      "id": "square",
+      "name": "The Square",
+      "archetype": "The Challenge",
+      "display_content": {
+        "principle": "The Principle of Conflict & Growth",
+        "core_concept": "The Square is a 'hard' aspect that places two archetypes in a state of tension that demands conscious awareness and integration. It creates internal friction and a crisis point that forces action and developmental growth."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Friction", "tension", "crisis", "action", "growth", "challenge", "conflict", "struggle", "integration"
+        ],
+        "comparative_dyads": {
+          "vs_soft_aspects": "Represents dynamic tension that forces growth and action, unlike soft aspects which indicate natural ease and talent."
+        }
+      }
+    },
+    {
+      "id": "trine",
+      "name": "The Trine",
+      "archetype": "The Harmony",
+      "display_content": {
+        "principle": "The Principle of Harmony & Ease",
+        "core_concept": "The Trine is a 'soft' aspect indicating that two archetypes support each other naturally and with ease. Their energies flow together, representing innate talents, areas of grace, and pathways of least resistance. While beneficial, they can sometimes lead to complacency."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Harmony", "ease", "flow", "talent", "grace", "support", "natural", "luck", "beneficial"
+        ],
+        "comparative_dyads": {
+          "vs_hard_aspects": "Represents natural ease and innate talent, unlike hard aspects which create friction that demands conscious integration."
+        }
+      }
+    },
+    {
+      "id": "opposition",
+      "name": "The Opposition",
+      "archetype": "The Polarity",
+      "display_content": {
+        "principle": "The Principle of Polarization & Awareness",
+        "core_concept": "The Opposition is a 'hard' aspect that creates a dynamic of polarization and projection. The individual may swing between the two extremes or project one of the archetypes onto others. The developmental task is to hold the tension and integrate the two poles into a balanced whole."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Polarization", "projection", "balance", "awareness", "confrontation", "integration", "dichotomy", "mirroring"
+        ],
+        "comparative_dyads": {
+          "vs_soft_aspects": "Represents a direct confrontation or polarity that demands balance, unlike soft aspects which signify easy cooperation."
+        }
+      }
+    },
+    {
+      "id": "sextile",
+      "name": "The Sextile",
+      "archetype": "The Opportunity",
+      "display_content": {
+        "principle": "The Principle of Opportunity & Cooperation",
+        "core_concept": "The Sextile is a 'soft' aspect that indicates two archetypes have a cooperative and stimulating relationship. Their energies are compatible, creating opportunities and the potential for easy collaboration, though they require conscious activation to be fully utilized."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Opportunity", "cooperation", "stimulation", "potential", "harmony", "dialogue", "synergy", "friendliness"
+        ],
+        "comparative_dyads": {
+          "vs_hard_aspects": "Represents easy opportunities for cooperation, unlike hard aspects which create tension that must be actively managed."
+        }
+      }
+    },
+    {
+      "id": "inconjunct",
+      "name": "The Inconjunct (Quincunx)",
+      "archetype": "The Adjustment",
+      "display_content": {
+        "principle": "The Principle of Adjustment & Refinement",
+        "core_concept": "The Inconjunct connects signs that share nothing in common, operating in different realities and creating a blind spot in the psyche. This aspect demands a constant, conscious process of adjustment and refinement between two life areas or psychological functions that do not naturally relate."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Adjustment", "refinement", "misunderstanding", "blind spot", "discomfort", "recalibration", "compromise", "dissonance"
+        ],
+        "comparative_dyads": {}
+      }
+    },
+    {
+      "id": "stellium",
+      "name": "The Stellium",
+      "archetype": "The Concentration",
+      "display_content": {
+        "principle": "The Principle of Concentration & Emphasis",
+        "core_concept": "A Stellium is not an aspect, but a concentration of multiple (typically three or more) planets in a single sign or house. This creates an immense focus of energy and emphasis on that sign's archetypal themes or that house's domain of life, becoming a dominant and powerful theme in the natal chart."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Concentration", "emphasis", "focus", "intensity", "complexity", "specialization", "overload", "powerhouse"
+        ],
+        "comparative_dyads": {}
+      }
+    }
+  ],
+  "angles": [
+    {
+      "id": "ascendant",
+      "name": "The Ascendant (ASC)",
+      "archetype": "The Helm of Being",
+      "display_content": {
+        "principle": "The Principle of Identity, Persona, and Embodiment",
+        "core_concept": "The Ascendant is the primary filter of identity through which all of life is experienced. It defines the persona, the physical body, and the fundamental approach to life, representing the self emerging into being at the moment of incarnation."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "The Self", "identity", "persona", "physical body", "appearance", "vitality", "beginnings", "initiatives", "personal outlook", "self-projection"
+        ],
+        "comparative_dyads": {
+          "vs_descendant": "The emergence of the Self (ASC) vs. The encounter with the Other (Descendant)."
+        }
+      }
+    },
+    {
+      "id": "imum_coeli",
+      "name": "The Imum Coeli (IC)",
+      "archetype": "The Subterranean Place",
+      "display_content": {
+        "principle": "The Principle of Foundation, Roots, and Inner Security",
+        "core_concept": "The IC represents the root of our being, governing home, family, ancestry, and our deepest emotional core. It is the most private and subjective point in the chart, the psychological 'midnight' where the inner self resides."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Home", "family", "roots", "ancestry", "parents", "childhood", "foundations", "emotional security", "private life", "the subconscious", "inner sanctuary"
+        ],
+        "comparative_dyads": {
+          "vs_midheaven": "Your private life, inner world, and psychological bedrock (IC) vs. Your public life, career, and social standing (MC)."
+        }
+      }
+    },
+    {
+      "id": "descendant",
+      "name": "The Descendant (DSC)",
+      "archetype": "The Setting Place",
+      "display_content": {
+        "principle": "The Principle of Partnership, Balance, and Relationship",
+        "core_concept": "The Descendant is where the self directly meets the 'other.' It is the primary domain of one-to-one relationships, committed partnerships, and binding contracts. It is the psychological stage where we learn about ourselves through the mirror of relationship[cite: 3906, 3907, 3916]."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Partnerships", "marriage", "relationships", "the other", "commitment", "contracts", "collaboration", "equality", "balance", "open enemies"
+        ],
+        "comparative_dyads": {
+          "vs_ascendant": "The encounter with the Other (Descendant) vs. The emergence of the Self (ASC)."
+        }
+      }
+    },
+    {
+      "id": "midheaven",
+      "name": "The Midheaven (MC)",
+      "archetype": "The Place of Action",
+      "display_content": {
+        "principle": "The Principle of Ambition, Public Life, and Legacy",
+        "core_concept": "The Midheaven is the apex of the chart and its most public, visible domain. It governs career, reputation, social status, and one's ultimate contribution to the world, representing one's vocation or 'calling'."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Career", "vocation", "profession", "ambition", "achievement", "success", "reputation", "public image", "social status", "legacy", "authority", "destiny"
+        ],
+        "comparative_dyads": {
+          "vs_imum_coeli": "Your public life, career, and social standing (MC) vs. Your private life, inner world, and psychological bedrock (IC)."
+        }
+      }
+    }
+  ],
+  "nodes": [
+      {
+        "id": "north_node",
+        "name": "The North Node",
+        "archetype": "The Point of Destiny",
+        "display_content": {
+          "principle": "The Principle of Future Growth and Evolutionary Purpose",
+          "core_concept": "The North Node represents the qualities we must cultivate and the experiences we must move toward to fulfill our soul's purpose. It often feels unfamiliar and challenging, as it points toward our evolutionary path and future potential."
+        },
+        "synthesis_components": {
+          "keywords_for_llm": [
+            "Destiny", "future growth", "karmic path", "evolutionary purpose", "life lesson", "soul's mission", "unfamiliar territory", "potential"
+          ],
+          "comparative_dyads": {
+            "vs_south_node": "The path of future growth and what must be learned vs. The path of past karma and what must be released."
+          }
+        }
+      },
+      {
+        "id": "south_node",
+        "name": "The South Node",
+        "archetype": "The Point of Past Karma",
+        "display_content": {
+          "principle": "The Principle of Past Talents and Karmic Release",
+          "core_concept": "The South Node represents our ingrained habits, innate talents, and karmic patterns from the past. While a place of comfort and familiarity, an over-reliance on the South Node can lead to stagnation. The developmental task is to release its limiting patterns."
+        },
+        "synthesis_components": {
+          "keywords_for_llm": [
+            "Past karma", "innate talents", "ingrained habits", "comfort zone", "release", "letting go", "past lives", "familiar patterns"
+          ],
+          "comparative_dyads": {
+            "vs_north_node": "The path of past karma and what must be released vs. The path of future growth and what must be learned."
+          }
+        }
+      }
+    ]
+}

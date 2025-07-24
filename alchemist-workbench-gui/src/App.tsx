@@ -1,40 +1,21 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './index.css'
+import chartData from './test_chart.json';
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Extract the original SVG string from the imported JSON data
+  const originalSvgChart = chartData.chart;
+
+  // This new line makes the SVG a fixed size by replacing its opening tag.
+  const responsiveSvgChart = originalSvgChart.replace('<svg ', '<svg width="1400" height="1400" ');
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-
-      <h1 className="text-3xl font-bold underline">
-        Hello World
-      </h1>
-
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <main className="flex justify-center items-center h-screen bg-gray-100 p-4">
+      <div
+        className="w-full bg-white rounded-lg shadow-lg overflow-hidden"
+        // Use the new, smaller SVG string here
+        dangerouslySetInnerHTML={{ __html: responsiveSvgChart }}
+      />
+    </main>
+  );
 }
 
-export default App
+export default App;

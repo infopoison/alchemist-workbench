@@ -1,0 +1,106 @@
+[
+  {
+    "categoryName": "Planets in Signs",
+    "features": [
+      { "id": "sun_in_taurus", "name": "Sun in Taurus", "type": "planet_in_sign", "components": ["sun", "taurus"] },
+      { "id": "neptune_in_capricorn", "name": "Neptune in Capricorn", "type": "planet_in_sign", "components": ["neptune", "capricorn"] },
+      { "id": "mercury_in_gemini", "name": "Mercury in Gemini", "type": "planet_in_sign", "components": ["mercury", "gemini"] },
+      { "id": "uranus_in_aquarius", "name": "Uranus in Aquarius", "type": "planet_in_sign", "components": ["uranus", "aquarius"] },
+      { "id": "saturn_in_pisces", "name": "Saturn in Pisces", "type": "planet_in_sign", "components": ["saturn", "pisces"] },
+      { "id": "pluto_in_scorpio", "name": "Pluto in Scorpio", "type": "planet_in_sign", "components": ["pluto", "scorpio"] },
+      { "id": "mars_in_leo", "name": "Mars in Leo", "type": "planet_in_sign", "components": ["mars", "leo"] },
+      { "id": "moon_in_capricorn", "name": "Moon in Capricorn", "type": "planet_in_sign", "components": ["moon", "capricorn"] },
+      { "id": "jupiter_in_sagittarius", "name": "Jupiter in Sagittarius", "type": "planet_in_sign", "components": ["jupiter", "sagittarius"] },
+      { "id": "venus_in_taurus", "name": "Venus in Taurus", "type": "planet_in_sign", "components": ["venus", "taurus"] }
+    ]
+  },
+  {
+    "categoryName": "Planets in Houses",
+    "features": [
+      { "id": "sun_in_8", "name": "Sun in Eighth House", "type": "planet_in_house", "components": ["sun", "8"] },
+      { "id": "neptune_in_3", "name": "Neptune in Third House", "type": "planet_in_house", "components": ["neptune", "3"] },
+      { "id": "mercury_in_8", "name": "Mercury in Eighth House", "type": "planet_in_house", "components": ["mercury", "8"] },
+      { "id": "uranus_in_4", "name": "Uranus in Fourth House", "type": "planet_in_house", "components": ["uranus", "4"] },
+      { "id": "saturn_in_5", "name": "Saturn in Fifth House", "type": "planet_in_house", "components": ["saturn", "5"] },
+      { "id": "pluto_in_2", "name": "Pluto in Second House", "type": "planet_in_house", "components": ["pluto", "2"] },
+      { "id": "mars_in_10", "name": "Mars in Tenth House", "type": "planet_in_house", "components": ["mars", "10"] },
+      { "id": "moon_in_3", "name": "Moon in Third House", "type": "planet_in_house", "components": ["moon", "3"] },
+      { "id": "jupiter_in_2", "name": "Jupiter in Second House", "type": "planet_in_house", "components": ["jupiter", "2"] },
+      { "id": "venus_in_7", "name": "Venus in Seventh House", "type": "planet_in_house", "components": ["venus", "7"] }
+    ]
+  },
+  {
+    "categoryName": "Signs on House Cusps",
+    "features": [
+      { "id": "libra_on_1", "name": "Libra on First House Cusp", "type": "sign_on_house", "components": ["libra", "1"] },
+      { "id": "scorpio_on_2", "name": "Scorpio on Second House Cusp", "type": "sign_on_house", "components": ["scorpio", "2"] },
+      { "id": "sagittarius_on_3", "name": "Sagittarius on Third House Cusp", "type": "sign_on_house", "components": ["sagittarius", "3"] },
+      { "id": "capricorn_on_4", "name": "Capricorn on Fourth House Cusp", "type": "sign_on_house", "components": ["capricorn", "4"] },
+      { "id": "pisces_on_5", "name": "Pisces on Fifth House Cusp", "type": "sign_on_house", "components": ["pisces", "5"] },
+      { "id": "pisces_on_6", "name": "Pisces on Sixth House Cusp", "type": "sign_on_house", "components": ["pisces", "6"] },
+      { "id": "aries_on_7", "name": "Aries on Seventh House Cusp", "type": "sign_on_house", "components": ["aries", "7"] },
+      { "id": "taurus_on_8", "name": "Taurus on Eighth House Cusp", "type": "sign_on_house", "components": ["taurus", "8"] },
+      { "id": "gemini_on_9", "name": "Gemini on Ninth House Cusp", "type": "sign_on_house", "components": ["gemini", "9"] },
+      { "id": "cancer_on_10", "name": "Cancer on Tenth House Cusp", "type": "sign_on_house", "components": ["cancer", "10"] },
+      { "id": "virgo_on_11", "name": "Virgo on Eleventh House Cusp", "type": "sign_on_house", "components": ["virgo", "11"] },
+      { "id": "virgo_on_12", "name": "Virgo on Twelfth House Cusp", "type": "sign_on_house", "components": ["virgo", "12"] }
+    ]
+  },
+  {
+    "categoryName": "Nodes in Signs",
+    "features": [
+      { "id": "mean_node_in_scorpio", "name": "Mean Node in Scorpio", "type": "node_in_sign", "components": ["mean_node", "scorpio"] },
+      { "id": "mean_south_node_in_taurus", "name": "Mean South Node in Taurus", "type": "node_in_sign", "components": ["mean_south_node", "taurus"] }
+    ]
+  },
+  {
+    "categoryName": "Nodes in Houses",
+    "features": [
+      { "id": "mean_node_in_1", "name": "Mean Node in First House", "type": "node_in_house", "components": ["mean_node", "1"] },
+      { "id": "mean_south_node_in_7", "name": "Mean South Node in Seventh House", "type": "node_in_house", "components": ["mean_south_node", "7"] }
+    ]
+  },
+  {
+    "categoryName": "Asteroids in Signs",
+    "features": [
+      { "id": "chiron_in_virgo", "name": "Chiron in Virgo", "type": "planet_in_sign", "components": ["chiron", "virgo"] },
+      { "id": "mean_lilith_in_gemini", "name": "Mean Lilith in Gemini", "type": "planet_in_sign", "components": ["mean_lilith", "gemini"] }
+    ]
+  },
+  {
+    "categoryName": "Asteroids in Houses",
+    "features": [
+      { "id": "chiron_in_11", "name": "Chiron in Eleventh House", "type": "planet_in_house", "components": ["chiron", "11"] },
+      { "id": "mean_lilith_in_8", "name": "Mean Lilith in Eighth House", "type": "planet_in_house", "components": ["mean_lilith", "8"] }
+    ]
+  },
+  {
+    "categoryName": "Notable Aspects",
+    "features": [
+      { "id": "sun_trine_moon", "name": "Sun Trine Moon", "type": "planet_aspect_planet", "components": ["sun", "trine", "moon"] },
+      { "id": "sun_square_mars", "name": "Sun Square Mars", "type": "planet_aspect_planet", "components": ["sun", "square", "mars"] },
+      { "id": "sun_sextile_saturn", "name": "Sun Sextile Saturn", "type": "planet_aspect_planet", "components": ["sun", "sextile", "saturn"] },
+      { "id": "sun_trine_uranus", "name": "Sun Trine Uranus", "type": "planet_aspect_planet", "components": ["sun", "trine", "uranus"] },
+      { "id": "sun_trine_neptune", "name": "Sun Trine Neptune", "type": "planet_aspect_planet", "components": ["sun", "trine", "neptune"] },
+      { "id": "sun_opposition_pluto", "name": "Sun Opposition Pluto", "type": "planet_aspect_planet", "components": ["sun", "opposition", "pluto"] },
+      { "id": "sun_trine_chiron", "name": "Sun Trine Chiron", "type": "planet_aspect_planet", "components": ["sun", "trine", "chiron"] },
+      { "id": "moon_sextile_saturn", "name": "Moon Sextile Saturn", "type": "planet_aspect_planet", "components": ["moon", "sextile", "saturn"] },
+      { "id": "moon_conjunction_uranus", "name": "Moon Conjunction Uranus", "type": "planet_aspect_planet", "components": ["moon", "conjunction", "uranus"] },
+      { "id": "moon_conjunction_neptune", "name": "Moon Conjunction Neptune", "type": "planet_aspect_planet", "components": ["moon", "conjunction", "neptune"] },
+      { "id": "moon_sextile_pluto", "name": "Moon Sextile Pluto", "type": "planet_aspect_planet", "components": ["moon", "sextile", "pluto"] },
+      { "id": "moon_trine_chiron", "name": "Moon Trine Chiron", "type": "planet_aspect_planet", "components": ["moon", "trine", "chiron"] },
+      { "id": "mercury_opposition_jupiter", "name": "Mercury Opposition Jupiter", "type": "planet_aspect_planet", "components": ["mercury", "opposition", "jupiter"] },
+      { "id": "mercury_square_chiron", "name": "Mercury Square Chiron", "type": "planet_aspect_planet", "components": ["mercury", "square", "chiron"] },
+      { "id": "venus_trine_mars", "name": "Venus Trine Mars", "type": "planet_aspect_planet", "components": ["venus", "trine", "mars"] },
+      { "id": "venus_square_uranus", "name": "Venus Square Uranus", "type": "planet_aspect_planet", "components": ["venus", "square", "uranus"] },
+      { "id": "mars_square_pluto", "name": "Mars Square Pluto", "type": "planet_aspect_planet", "components": ["mars", "square", "pluto"] },
+      { "id": "saturn_sextile_neptune", "name": "Saturn Sextile Neptune", "type": "planet_aspect_planet", "components": ["saturn", "sextile", "neptune"] },
+      { "id": "saturn_trine_pluto", "name": "Saturn Trine Pluto", "type": "planet_aspect_planet", "components": ["saturn", "trine", "pluto"] },
+      { "id": "saturn_opposition_chiron", "name": "Saturn Opposition Chiron", "type": "planet_aspect_planet", "components": ["saturn", "opposition", "chiron"] },
+      { "id": "uranus_conjunction_neptune", "name": "Uranus Conjunction Neptune", "type": "planet_aspect_planet", "components": ["uranus", "conjunction", "neptune"] },
+      { "id": "uranus_sextile_pluto", "name": "Uranus Sextile Pluto", "type": "planet_aspect_planet", "components": ["uranus", "sextile", "pluto"] },
+      { "id": "neptune_sextile_pluto", "name": "Neptune Sextile Pluto", "type": "planet_aspect_planet", "components": ["neptune", "sextile", "pluto"] },
+      { "id": "neptune_trine_chiron", "name": "Neptune Trine Chiron", "type": "planet_aspect_planet", "components": ["neptune", "trine", "chiron"] }
+    ]
+  }
+]

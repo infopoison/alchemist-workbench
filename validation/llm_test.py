@@ -10,7 +10,7 @@ from typing import List, Dict, Any, Optional
 # =============================================================================
 
 INTERPRETATION_SERVICE_URL = "http://localhost:8003"
-CHART_DATA_FILE = "test_chart.json"
+CHART_DATA_FILE = "test_chart_RV.json"
 LIFE_AREAS = [
     "psychological_patterns", "relational_dynamics", "occupational_arenas",
     "creative_expression", "health_and_wellness", "financial_style", "leisure_and_hobbies"

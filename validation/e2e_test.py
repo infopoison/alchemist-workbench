@@ -19,6 +19,15 @@ SAMPLE_BIRTH_DATA = {
     "longitude": -96.7969,
     "timezone": "America/Chicago"
 }
+SAMPLE_BIRTH_DATA = {
+    "name": "RV",
+    "city": "Santiago",
+    "date": "1970-08-06",
+    "time": "00:00:00",
+    "latitude": -33.447,
+    "longitude": -70.673,
+    "timezone": "America/Santiago"
+}
 
 # Define the list of all life areas to generate manifestations for.
 # This list is derived from the ManifestationRequest schema.
