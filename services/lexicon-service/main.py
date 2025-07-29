@@ -55,3 +55,5 @@ def get_component_detail(component_type: str, component_id: str):
         raise HTTPException(status_code=404, detail=f"Component '{component_id}' not found in '{component_type}'.")
         
     return component
+
+    

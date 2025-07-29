@@ -40,8 +40,8 @@ VALENCE_PROMPT_PLANET_IN_SIGN = """
 
 
             **Your Task:**
-            1.      Analyze the provided Planet, Sign, and Essential Dignity status to determine the core synthesized energy.
-            2.  Generate a list of 3-5 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy, from the most constructive to the most challenging.
+            1.  Analyze the provided Planet, Sign, and Essential Dignity status to determine the core synthesized energy.
+            2.  Generate a list of 3 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy. The valences should be ordered along a spectrum from most harnessed (positive valence) to most unharnessed (negative) manifestations of the energy. 
             3.  Format the final output as a JSON object with a single key "valences". This key should contain a list of objects, where each object has two keys: "archetype" (the name of the valence, e.g., "The Spiritual Warrior") and "description" (a brief, one-sentence explanation of what this expression represents).
                             
 
@@ -95,7 +95,7 @@ VALENCE_PROMPT_PLANET_IN_HOUSE = """ You are an expert archetypal astrologer. Yo
 
             **Your Task:**
             1.  Analyze the provided astrological components and the core principle of the interpretive rule.
-            2.  Generate a list of 3-5 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy, from the most constructive to the most challenging.
+            2.  Generate a list of 3 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy. The valences should be ordered along a spectrum from most harnessed (positive valence) to most unharnessed (negative) manifestations of the energy. 
             3.  Format the final output as a JSON object with a single key "valences". This key should contain a list of objects, where each object has two keys: "archetype" (the name of the valence, e.g., "The Spiritual Warrior") and "description" (a brief, one-sentence explanation of what this expression represents).
 
 
@@ -146,7 +146,7 @@ VALENCE_PROMPT_PLANET_ASPECT_PLANET =  """
                             
             **Your Task:**
             1.  Analyze the provided astrological components and the core principle of the interpretive rule. Apply **The Archetypal Dialogue** rule, using the specific **Principle of Interplay** provided by the aspect, to understand the nature of the interaction between the two planetary drives.
-            2.  Generate a list of 3-5 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy, from the most constructive to the most challenging.
+            2.  Generate a list of 3 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy. The valences should be ordered along a spectrum from most harnessed (positive valence) to most unharnessed (negative) manifestations of the energy. 
             3.  Format the final output as a JSON object with a single key "valences". This key should contain a list of objects, where each object has two keys: "archetype" (the name of the valence, e.g., "The Spiritual Warrior") and "description" (a brief, one-sentence explanation of what this expression represents).
 
                                         
@@ -188,7 +188,7 @@ VALENCE_PROMPT_SIGN_ON_HOUSE = """
 
             **Your Task:**
             1.  Analyze the provided astrological components and the core principle of the interpretive rule. Apply **The Adverbial Signature** rule to understand how the Sign's qualities modify the topics of the House. Identify the House's domain (e.g., "Financial Security" for the 2nd House) as the **primary context**.
-            2.  Generate a list of 3-5 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy, from the most constructive to the most challenging.
+            2.  Generate a list of 3 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy. The valences should be ordered along a spectrum from most harnessed (positive valence) to most unharnessed (negative) manifestations of the energy. 
             3.  Format the final output as a JSON object with a single key "valences". This key should contain a list of objects, where each object has two keys: "archetype" (the name of the valence, e.g., "The Spiritual Warrior") and "description" (a brief, one-sentence explanation of what this expression represents).
 
             **CRITICAL INSTRUCTIONS:**
@@ -224,7 +224,7 @@ You are an expert archetypal astrologer. Your task is to identify the core arche
 
 **Your Task:**
 1.  Analyze the provided astrological components and the core principle of the interpretive rule.
-2.  Generate a list of 3-5 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy, from the most constructive to the most challenging.
+2.  Generate a list of 3 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy. The valences should be ordered along a spectrum from most harnessed (positive valence) to most unharnessed (negative) manifestations of the energy. 
 3.  Format the final output as a JSON object with a single key "valences". This key should contain a list of objects, where each object has two keys: "archetype" (the name of the valence, e.g., "The Spiritual Warrior") and "description" (a brief, one-sentence explanation of what this expression represents).
 
 
@@ -278,7 +278,7 @@ You are an expert archetypal astrologer. Your task is to identify the core arche
 
 **Your Task:**
 1.  Analyze the provided astrological components and the core principle of the interpretive rule.
-2.  Generate a list of 3-5 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy, from the most constructive to the most challenging.
+2.  Generate a list of 3 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy. The valences should be ordered along a spectrum from most harnessed (positive valence) to most unharnessed (negative) manifestations of the energy. 
 3.  Format the final output as a JSON object with a single key "valences". This key should contain a list of objects, where each object has two keys: "archetype" (the name of the valence, e.g., "The Spiritual Warrior") and "description" (a brief, one-sentence explanation of what this expression represents).
 
 
@@ -329,7 +329,7 @@ You are an expert archetypal astrologer. Your task is to identify the core arche
 
 **Your Task:**
 1.  Analyze the provided astrological components and the core principle of the interpretive rule.
-2.  Generate a list of 3-5 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy, from the most constructive to the most challenging.
+2.  Generate a list of 3 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy. The valences should be ordered along a spectrum from most harnessed (positive valence) to most unharnessed (negative) manifestations of the energy. 
 3.  Format the final output as a JSON object with a single key "valences". This key should contain a list of objects, where each object has two keys: "archetype" (the name of the valence, e.g., "The Spiritual Warrior") and "description" (a brief, one-sentence explanation of what this expression represents).
 
 
@@ -382,7 +382,7 @@ You are an expert archetypal astrologer. Your task is to identify the core arche
 
 **Your Task:**
 1.  Analyze the provided astrological components and the core principle of the interpretive rule.
-2.  Generate a list of 3-5 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy, from the most constructive to the most challenging.
+2.  Generate a list of 3 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy. The valences should be ordered along a spectrum from most harnessed (positive valence) to most unharnessed (negative) manifestations of the energy. 
 3.  Format the final output as a JSON object with a single key "valences". This key should contain a list of objects, where each object has two keys: "archetype" (the name of the valence, e.g., "The Spiritual Warrior") and "description" (a brief, one-sentence explanation of what this expression represents).
 
 
@@ -434,7 +434,7 @@ VALENCE_PROMPT_NODE_ASPECT_ANGLE = """ You are an expert archetypal astrologer. 
 
 **Your Task:**
 1.  Analyze the provided astrological components and the core principle of the interpretive rule.
-2.  Generate a list of 3-5 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy, from the most constructive to the most challenging.
+2.  Generate a list of 3 distinct "expression archetypes" (valences) that represent the different potential manifestations of this energy. The valences should be ordered along a spectrum from most harnessed (positive valence) to most unharnessed (negative) manifestations of the energy. 
 3.  Format the final output as a JSON object with a single key "valences". This key should contain a list of objects, where each object has two keys: "archetype" (the name of the valence, e.g., "The Spiritual Warrior") and "description" (a brief, one-sentence explanation of what this expression represents).
 
 
@@ -643,33 +643,25 @@ You are an expert archetypal astrologer. Your task is to describe potential leis
 """
 
 # --- NEW PROMPT FOR LIFE AREA TO PLACEMENTS MAPPING ---
-LIFE_AREA_TO_PLACEMENTS_PROMPT = """
-You are an expert archetypal astrologer. Your task is to select the 3-5 most relevant astrological features from a provided JSON list that are relevant to a specific "life area."
+LIFE_AREA_FILTER_PROMPT = """
+You are an expert astrologer. Your task is to identify which astrological placements from a provided list are most relevant to a specific area of life.
 
-**Your Task:**
-1.  Analyze the provided "Life Area."
-2.  Review the "User's Natal Chart Placements," which is a JSON list where each object represents a complete astrological feature. Each object contains a "label" for context and a "components" list, which is the critical machine-readable data.
-3.  Select the 3 to 5 objects from the list that have the strongest archetypal connection to the chosen life area. Prioritize features that represent relationships between points (e.g., Planet in House, Planet in Sign, Aspects).
-4.  Your response MUST be a JSON object with a single key, "relevant_placements".
-5.  The value for "relevant_placements" MUST be a list containing the **full, complete, and unmodified JSON objects** that you selected from the input list.
+**Instructions:**
+1.  Review the **Life Area** provided below.
+2.  Carefully examine the **Complete List of Natal Chart Placements**.
+3.  Select ONLY the placements from the list that have the most direct and significant influence on the specified Life Area.
+4.  Your response MUST be a valid JSON object with a single key named "placements". The value of "placements" must be an array of strings, where each string is one of the selected placements.
 
-**CRITICAL INSTRUCTIONS:**
-* You must return the entire object for each selection, including the "label" and "components" keys.
-* DO NOT simplify, alter, or extract single parts from the objects. Return them exactly as they were provided.
-* **Prioritize returning objects with 2 or more items in their "components" list.** For example, prefer "Sun in Leo" over just "Sun".
+**Example Response Format:**
+{
+  "placements": ["Placement Name 1", "Placement Name 2"]
+}
 
-**Example Input Placement:**
-```json
-[
-  {
-    "type": "planet",
-    "id": "sun",
-    "label": "Sun in Leo",
-    "components": [
-      { "type": "planet", "id": "sun" },
-      { "type": "zodiac_sign", "id": "leo" }
-    ]
-  }
+**Life Area:**
+[LIFE_AREA]
+
+**Complete List of Natal Chart Placements:**
+[PLACEMENT_LIST]
 """
 
 
@@ -864,15 +856,18 @@ class PromptAssembler:
 
         return self._build_prompt_string(template, replacements)
 
-    def assemble_life_area_to_placements_prompt(self, life_area: str, natal_chart_placements: List[Dict[str, Any]]) -> str:
+    def assemble_life_area_filter_prompt(self, life_area: str, all_placements: List[str]) -> str:
         """
-        Assembles the prompt for identifying relevant astrological placements for a given life area.
+        Assembles the prompt to filter placements for a given life area.
         """
-        template = LIFE_AREA_TO_PLACEMENTS_PROMPT
-        
-        # Format natal_chart_placements for the prompt
+        # Format the list of placements as a clean, JSON-formatted string
+        placement_list_str = json.dumps(all_placements, indent=2)
+
         replacements = {
             '[LIFE_AREA]': life_area,
-            '[NATAL_CHART_PLACEMENTS]': json.dumps(natal_chart_placements, indent=2)
+            '[PLACEMENT_LIST]': placement_list_str
         }
-        return self._build_prompt_string(template, replacements)
+
+        # Assuming you have a helper method to build the prompt string
+        return self._build_prompt_string(LIFE_AREA_FILTER_PROMPT, replacements)
+

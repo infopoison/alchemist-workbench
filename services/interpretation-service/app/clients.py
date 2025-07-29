@@ -7,7 +7,7 @@ from typing import Dict, Any, List, Optional
 # Import custom exceptions from main.py (assuming they are defined in app/main.py or a shared exceptions.py)
 # For simplicity, we'll import them directly from main for now.
 # In a larger project, these would typically be in a shared 'app/exceptions.py' file.
-from .main import UpstreamServiceError, ComponentNotFoundError, InvalidBirthDataError
+from .exceptions import UpstreamServiceError, ComponentNotFoundError, InvalidBirthDataError
 
 # Import schemas from the Calculation Service for type hinting/validation of incoming chart data
 # In a real monorepo, these would be imported from a shared package.

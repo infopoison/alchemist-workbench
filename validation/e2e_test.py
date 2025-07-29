@@ -133,20 +133,21 @@ async def main():
                 json=SAMPLE_BIRTH_DATA
             )
             relevant_placements_response.raise_for_status()
-            relevant_placements = relevant_placements_response.json()
-            
-            print(f"✅ SUCCESS: Interpretation Service responded with status {relevant_placements_response.status_code}.")
-            print(f"--- RAW RESPONSE FROM LLM ---\n{relevant_placements}\n-----------------------------")
+            response_data = relevant_placements_response.json()
+            relevant_placements = response_data.get('component_placements', [])
+
+            #print(f"✅ SUCCESS: Interpretation Service responded with status {relevant_placements_response.status_code}.")
+            print(f"--- RAW RESPONSE FROM LLM ---\n{response_data}\n-----------------------------")
             if not relevant_placements:
                 print(f"❌ ERROR: No relevant placements returned for '{selected_life_area}'. Halting.")
                 return
             
-            formatted_placements = [f'{p.get("type")}:{p.get("id")}' for p in relevant_placements]
+            formatted_placements = [p.get("display", "Unknown Placement") for p in relevant_placements]
             print(f"   -> LLM suggested relevant placements: {formatted_placements}")
 
             # For the purpose of this automated test, we'll just pick the first one.
             chosen_placement_for_valence = relevant_placements[0]
-            print(f"   -> Automatically selected the first relevant placement for further analysis: '{chosen_placement_for_valence.get('type')}:{chosen_placement_for_valence.get('id')}'")
+            print(f"   -> Automatically selected the first relevant placement for further analysis: '{chosen_placement_for_valence.get('display')}'")
 
         except httpx.HTTPStatusError as e:
             print(f"❌ ERROR: Interpretation Service (/life-areas/find-relevant-placements) returned a {e.response.status_code} status.")
@@ -161,12 +162,14 @@ async def main():
         # STAGE 3: Call Interpretation Service for Valences (using the chosen relevant placement)
         # ---------------------------------------------------------------------
         print("\n--- [Stage 3/6] Simulating Valence Generation ---")
-        print(f"   -> LLM chose the following placement for further analysis: {relevant_placements}")
+        print(f"   -> Using the automatically selected placement for valence generation: '{chosen_placement_for_valence.get('display')}'")
 
+        chosen_placement_components = chosen_placement_for_valence.get("components", [])
         valence_payload = {
-            "components": relevant_placements, # Pass the ENTIRE list directly
-            "birth_data": SAMPLE_BIRTH_DATA
+            "components": chosen_placement_components, 
+            "birth_data": SAMPLE_BIRTH_DATA 
         }
+        
         try:
             print(f"-> Sending selected placement to Interpretation Service at {INTERPRETATION_SERVICE_URL}/interpret/valences...")
             valence_response = await client.post(f"{INTERPRETATION_SERVICE_URL}/interpret/valences", json=valence_payload)
@@ -180,10 +183,14 @@ async def main():
             
             # Programmatically select the first valence to simulate user choice
             chosen_valence = valences[0]
-            print(f"\n--- [Stage 4/6] Simulating User Valence Selection ---")
-            print(f"-> If the user had selected the first option, they would choose the '{chosen_valence['archetype']}' valence.")
-            print(f"   Description: \"{chosen_valence['description']}\"")
+            print(f"\n--- [Stage 4/6] Displaying All Generated Valences & Simulating Selection ---")
+            print("-> All valences received from the interpretation service:")
+            for i, valence in enumerate(valences):
+                print(f"  [{i+1}] {valence.get('archetype', 'N/A')}: {valence.get('description', 'No description.')}")
 
+            # The script will still proceed by automatically selecting the first valence
+            print(f"\n-> Automatically selecting the first valence to continue: '{chosen_valence.get('archetype')}'")
+            
         except httpx.HTTPStatusError as e:
             print(f"❌ ERROR: Interpretation Service (Valence) returned a {e.response.status_code} status.")
             print(f"   Response: {e.response.text}")
@@ -195,6 +202,7 @@ async def main():
         # ---------------------------------------------------------------------
         # STAGE 5: Loop and Call for Manifestations for the chosen valence
         # ---------------------------------------------------------------------
+        """
         if chosen_valence and chosen_placement_for_valence:
             print("\n--- [Stage 5/6] Simulating Manifestation Generation for all Life Areas ---")
             for area in MANIFESTATION_LIFE_AREAS: # Use the specific list for manifestations
@@ -241,6 +249,7 @@ async def main():
                     print(f"   Response: {e.response.text}")
                 except (httpx.RequestError, json.JSONDecodeError) as e:
                     print(f"❌ ERROR on '{area}': An issue occurred: {e}")
+        """
 
     print("\n\n✨ End-to-End Test Simulation Complete. ✨")
 

@@ -22,6 +22,9 @@ from .schemas import (
     # ADDED THESE IMPORTS:
     BirthDataInput, ComponentInput
 )
+from .placement_extractor import extract_all_placement_objects
+from .clients import CalculationServiceClient 
+
 
 # Import the refactored PromptAssembler
 from .exceptions import UpstreamServiceError, ComponentNotFoundError, InvalidBirthDataError
@@ -285,155 +288,79 @@ async def get_manifestations(request_data: ManifestationRequest, request: Reques
         raise HTTPException(status_code=500, detail="Failed to generate manifestations.")
 
 
-# New endpoint for Task 2.1
-@app.post("/life-areas/find-relevant-placements", response_model=List[ComponentInput], tags=["Life Area Mapping"])
-async def find_relevant_placements(life_area: str, birth_data: BirthDataInput, request: Request):
+@app.post("/life-areas/find-relevant-placements")
+async def find_relevant_placements(life_area: str, request: Request) -> Dict[str, Any]:
     """
-    Identifies the most relevant astrological placements from a user's natal chart
-    for a given life area using an LLM.
+    Identifies relevant placements using your existing clients and workflow.
     """
-    prompt_assembler = request.app.state.prompt_assembler
-    openai_client = request.app.state.openai_client
-    calculation_client = request.app.state.calculation_client
-
     try:
-        # 1. Get the full natal chart from the Calculation Service
-        natal_chart = await calculation_client.get_natal_chart(birth_data.dict())
+        # Access your real clients from the application state
+        calc_client = request.app.state.calculation_client
+        prompt_assembler = request.app.state.prompt_assembler
+        openai_client = request.app.state.openai_client
 
-        print(f"--- NATAL CHART RECEIVED ---\n{natal_chart}\n--------------------------")
-
+        birth_data = await request.json()
         
-        # 2. Extract relevant components from the natal chart response for the prompt
-        # This structure needs to match what the LLM prompt expects.
-        # For simplicity, let's extract all main placements like planets, houses, aspects, nodes, angles.
-        # A more robust solution might filter this based on typical astrological relevance.
+        # --- Step 1: Get chart data ---
+        full_chart_object = await calc_client.get_natal_chart(birth_data)
+        print('full_chart_object', full_chart_object)
+
+        # --- Step 2: Extract all possible placement objects ---
+        all_placement_objects = extract_all_placement_objects(full_chart_object)
+        print(all_placement_objects)
         
-        natal_chart_placements = []
-
-    # REPLACE WITH THIS LOGIC TO RESTORE THE ORIGINAL, CORRECT STRUCTURE
-
-    # Process planets, nodes, and angles
-    for p in natal_chart.get('celestial_points', []):
-        point_id = p.get('id', '')
-        if 'node' in point_id:
-            component_type = 'node'
-        elif any(angle in point_id for angle in ['ascendant', 'descendant', 'medium_coeli', 'imum_coeli']):
-            component_type = 'angle'
-        else:
-            component_type = 'planet'
-
-        sign_name = p.get('zodiac_sign', {}).get('name')
-        house_id = p.get('house', {}).get('id', '').replace('_house', '')
-        house_name = p.get('house', {}).get('name')
-
-        # Add placement by sign (e.g., "Sun in Leo")
-        if sign_name:
-            natal_chart_placements.append({
-                "label": f"{p['name']} in {sign_name}",
-                "components": [
-                    {"type": component_type, "id": p['id']},
-                    {"type": "zodiac_sign", "id": sign_name.lower()}
-                ]
-            })
-
-        # Add placement by house (e.g., "Sun in Fourth House")
-        if house_name and house_id:
-            natal_chart_placements.append({
-                "label": f"{p['name']} in {house_name}",
-                "components": [
-                    {"type": component_type, "id": p['id']},
-                    {"type": "house", "id": house_id}
-                ]
-            })
-
-    # Add house cusps
-    for house in natal_chart.get('houses', []):
-        sign_name = house.get('zodiac_sign', {}).get('name')
-        if sign_name:
-            natal_chart_placements.append({
-                "label": f"{house['name']} with {sign_name} on cusp",
-                "components": [
-                    {"type": "house", "id": house['id']},
-                    {"type": "zodiac_sign", "id": sign_name.lower()}
-                ]
-            })
-
-    # Add aspects
-    for aspect in natal_chart.get('aspects', []):
-        p1_id = aspect.get('point_1_id')
-        p2_id = aspect.get('point_2_id')
+        # --- Step 3: Create the list of display strings for the prompt ---
+        all_display_strings = [p['display'] for p in all_placement_objects]
+        print(all_display_strings)
         
-        # Determine type for p1 and p2 to build the components correctly
-        p1_type = 'planet' # Simplified assumption, can be refined
-        if any(angle in p1_id for angle in ['ascendant', 'descendant', 'medium_coeli', 'imum_coeli']):
-            p1_type = 'angle'
-        elif 'node' in p1_id:
-            p1_type = 'node'
-            
-        p2_type = 'planet' # Simplified assumption, can be refined
-        if any(angle in p2_id for angle in ['ascendant', 'descendant', 'medium_coeli', 'imum_coeli']):
-            p2_type = 'angle'
-        elif 'node' in p2_id:
-            p2_type = 'node'
+        # --- Step 4: Assemble the prompt using your prompt_assembler ---
+        prompt = prompt_assembler.assemble_life_area_filter_prompt(life_area, all_display_strings)
+        
+        print(f"--- [DEBUG] PROMPT SENT TO OPENAI ---\n{prompt}\n---------------------------------")
 
-        natal_chart_placements.append({
-            "label": f"{aspect['p1_name']} {aspect['aspect_name']} {aspect['p2_name']}",
-            "components": [
-                {"type": p1_type, "id": p1_id},
-                {"type": "dynamic", "id": aspect['aspect_id']},
-                {"type": p2_type, "id": p2_id}
-            ]
-        })
-
-        # 3. Assemble the prompt for relevant placements
-        prompt_text = prompt_assembler.assemble_life_area_to_placements_prompt(
-            life_area=life_area,
-            natal_chart_placements=natal_chart_placements
-        )
-
-        # 4. Call the LLM
-        llm_response = openai_client.chat.completions.create(
-            model="gpt-4o-mini", # Using the same model as other interpretation endpoints
-            messages=[{"role": "user", "content": prompt_text}],
-            response_format={"type": "json_object"}
+        # --- Step 5: Make a direct call to the OpenAI LLM (as you suggested) ---
+        print("--- Calling OpenAI to find relevant placements... ---")
+        llm_response = await asyncio.to_thread(
+            openai_client.chat.completions.create,
+            model="gpt-4o-mini", # Use the model you prefer
+            messages=[{"role": "user", "content": prompt}],
+            response_format={"type": "json_object"} # Force JSON output
         )
 
         response_content = llm_response.choices[0].message.content
-        relevant_placements_data = json.loads(response_content)
+        if not response_content:
+            raise BadLLMResponseError("LLM returned an empty response.")
+        
+        llm_response_data = json.loads(response_content)
+        
+        # --- DYNAMIC KEY PARSING LOGIC ---
+        llm_filtered_strings = []
+        if isinstance(llm_response_data, dict) and llm_response_data:
+            # If the response is a dictionary, get the list from the *first value*,
+            # regardless of the key's name.
+            first_value = next(iter(llm_response_data.values()), None)
+            if isinstance(first_value, list):
+                llm_filtered_strings = first_value
+                
+        elif isinstance(llm_response_data, list):
+            # If the LLM returns a raw list, use it directly.
+            llm_filtered_strings = llm_response_data
+        # ---------------------------------
 
-        # REPLACE WITH THIS LOGIC TO PRESERVE THE "BEAUTIFUL" STRUCTURE
-        # 5. Extract the components from the first placement chosen by the LLM
-        selected_placements = relevant_placements_data.get("relevant_placements", [])
-
-        if not selected_placements:
-            return [] # Return an empty list if the LLM didn't choose anything
-
-        # Take the full "components" list from the first object the LLM selected
-        first_choice = selected_placements[0]
-        components_to_return = first_choice.get("components", [])
-
-        # Validate the components before returning them
-        validated_components = [
-            ComponentInput(type=c['type'], id=c['id'])
-            for c in components_to_return
+        # Filter the original objects using the strings we just found
+        selected_component_placements = [
+            p for p in all_placement_objects if p['display'] in llm_filtered_strings
         ]
+        
+        # Return the final, combined payload
+        return {
+            "display_placements": llm_filtered_strings,
+            "component_placements": selected_component_placements
+        }
 
-        return validated_components
-
-
-    except (UpstreamServiceError, InvalidBirthDataError, ComponentNotFoundError) as e:
-        # Re-raise known application-specific exceptions
-        raise e
-    except OpenAIError as e:
-        # Handle specific OpenAI errors
-        if "rate limit" in str(e):
-            raise SynthesisRateLimitError("The synthesis engine is experiencing high demand.")
-        if "content management policy" in str(e):
-            raise SynthesisContentError("The interpretation could not be generated due to a content policy violation.")
-        raise UpstreamServiceError(f"An error occurred with the synthesis engine during placement selection: {e}")
-    except json.JSONDecodeError:
-        raise BadLLMResponseError("The synthesis engine returned a malformed response when finding relevant placements.")
+    except UpstreamServiceError as e:
+        raise HTTPException(status_code=502, detail=str(e))
     except Exception as e:
-        print(f"An unexpected error occurred during relevant placement identification: {e}")
-        traceback.print_exc()
-        raise HTTPException(status_code=500, detail="Failed to identify relevant placements.")
+        print(f"ERROR in find_relevant_placements: {e}")
+        raise HTTPException(status_code=500, detail=f"An unexpected internal error occurred: {str(e)}")
+
