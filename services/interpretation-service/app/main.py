@@ -6,7 +6,7 @@ import traceback
 import uuid
 import asyncio
 from contextlib import asynccontextmanager
-from typing import List
+from typing import List, Dict, Any # Added Dict, Any for type hinting in relevant placements logic
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Request, status
@@ -18,7 +18,9 @@ from .schemas import (
     DeconstructRequest, DeconstructResponse,
     ValenceRequest, ValenceResponse,
     ManifestationRequest, ManifestationResponse,
-    EngineMetadata
+    EngineMetadata,
+    # ADDED THESE IMPORTS:
+    BirthDataInput, ComponentInput
 )
 
 # Import the refactored PromptAssembler
@@ -91,6 +93,56 @@ async def generic_exception_handler(request: Request, exc: Exception):
             }
         },
     )
+
+# Custom exception handlers for more specific error responses
+@app.exception_handler(UpstreamServiceError)
+async def upstream_service_error_handler(request: Request, exc: UpstreamServiceError):
+    return JSONResponse(
+        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+        content={
+            "error": {
+                "code": "upstream_service_error",
+                "message": f"A required upstream service is unavailable or returned an error: {exc.detail}"
+            }
+        }
+    )
+
+@app.exception_handler(ComponentNotFoundError)
+async def component_not_found_error_handler(request: Request, exc: ComponentNotFoundError):
+    return JSONResponse(
+        status_code=status.HTTP_404_NOT_FOUND,
+        content={
+            "error": {
+                "code": "component_not_found",
+                "message": exc.detail
+            }
+        }
+    )
+
+# ADDED THIS EXCEPTION HANDLER (if not already present in your local file)
+@app.exception_handler(InvalidBirthDataError)
+async def invalid_birth_data_error_handler(request: Request, exc: InvalidBirthDataError):
+    return JSONResponse(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        content={
+            "error": {
+                "code": "invalid_birth_data",
+                "message": exc.detail
+            }
+        }
+    )
+
+class SynthesisRateLimitError(HTTPException):
+    def __init__(self, detail: str = "Rate limit exceeded for the synthesis engine."):
+        super().__init__(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail=detail)
+
+class SynthesisContentError(HTTPException):
+    def __init__(self, detail: str = "The interpretation could not be generated due to a content policy violation."):
+        super().__init__(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)
+
+class BadLLMResponseError(HTTPException):
+    def __init__(self, detail: str = "The synthesis engine returned a malformed response."):
+        super().__init__(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=detail)
 
 
 # =============================================================================
@@ -231,3 +283,157 @@ async def get_manifestations(request_data: ManifestationRequest, request: Reques
         print(f"An unexpected error occurred during manifestation generation: {e}")
         traceback.print_exc()
         raise HTTPException(status_code=500, detail="Failed to generate manifestations.")
+
+
+# New endpoint for Task 2.1
+@app.post("/life-areas/find-relevant-placements", response_model=List[ComponentInput], tags=["Life Area Mapping"])
+async def find_relevant_placements(life_area: str, birth_data: BirthDataInput, request: Request):
+    """
+    Identifies the most relevant astrological placements from a user's natal chart
+    for a given life area using an LLM.
+    """
+    prompt_assembler = request.app.state.prompt_assembler
+    openai_client = request.app.state.openai_client
+    calculation_client = request.app.state.calculation_client
+
+    try:
+        # 1. Get the full natal chart from the Calculation Service
+        natal_chart = await calculation_client.get_natal_chart(birth_data.dict())
+
+        print(f"--- NATAL CHART RECEIVED ---\n{natal_chart}\n--------------------------")
+
+        
+        # 2. Extract relevant components from the natal chart response for the prompt
+        # This structure needs to match what the LLM prompt expects.
+        # For simplicity, let's extract all main placements like planets, houses, aspects, nodes, angles.
+        # A more robust solution might filter this based on typical astrological relevance.
+        
+        natal_chart_placements = []
+
+    # REPLACE WITH THIS LOGIC TO RESTORE THE ORIGINAL, CORRECT STRUCTURE
+
+    # Process planets, nodes, and angles
+    for p in natal_chart.get('celestial_points', []):
+        point_id = p.get('id', '')
+        if 'node' in point_id:
+            component_type = 'node'
+        elif any(angle in point_id for angle in ['ascendant', 'descendant', 'medium_coeli', 'imum_coeli']):
+            component_type = 'angle'
+        else:
+            component_type = 'planet'
+
+        sign_name = p.get('zodiac_sign', {}).get('name')
+        house_id = p.get('house', {}).get('id', '').replace('_house', '')
+        house_name = p.get('house', {}).get('name')
+
+        # Add placement by sign (e.g., "Sun in Leo")
+        if sign_name:
+            natal_chart_placements.append({
+                "label": f"{p['name']} in {sign_name}",
+                "components": [
+                    {"type": component_type, "id": p['id']},
+                    {"type": "zodiac_sign", "id": sign_name.lower()}
+                ]
+            })
+
+        # Add placement by house (e.g., "Sun in Fourth House")
+        if house_name and house_id:
+            natal_chart_placements.append({
+                "label": f"{p['name']} in {house_name}",
+                "components": [
+                    {"type": component_type, "id": p['id']},
+                    {"type": "house", "id": house_id}
+                ]
+            })
+
+    # Add house cusps
+    for house in natal_chart.get('houses', []):
+        sign_name = house.get('zodiac_sign', {}).get('name')
+        if sign_name:
+            natal_chart_placements.append({
+                "label": f"{house['name']} with {sign_name} on cusp",
+                "components": [
+                    {"type": "house", "id": house['id']},
+                    {"type": "zodiac_sign", "id": sign_name.lower()}
+                ]
+            })
+
+    # Add aspects
+    for aspect in natal_chart.get('aspects', []):
+        p1_id = aspect.get('point_1_id')
+        p2_id = aspect.get('point_2_id')
+        
+        # Determine type for p1 and p2 to build the components correctly
+        p1_type = 'planet' # Simplified assumption, can be refined
+        if any(angle in p1_id for angle in ['ascendant', 'descendant', 'medium_coeli', 'imum_coeli']):
+            p1_type = 'angle'
+        elif 'node' in p1_id:
+            p1_type = 'node'
+            
+        p2_type = 'planet' # Simplified assumption, can be refined
+        if any(angle in p2_id for angle in ['ascendant', 'descendant', 'medium_coeli', 'imum_coeli']):
+            p2_type = 'angle'
+        elif 'node' in p2_id:
+            p2_type = 'node'
+
+        natal_chart_placements.append({
+            "label": f"{aspect['p1_name']} {aspect['aspect_name']} {aspect['p2_name']}",
+            "components": [
+                {"type": p1_type, "id": p1_id},
+                {"type": "dynamic", "id": aspect['aspect_id']},
+                {"type": p2_type, "id": p2_id}
+            ]
+        })
+
+        # 3. Assemble the prompt for relevant placements
+        prompt_text = prompt_assembler.assemble_life_area_to_placements_prompt(
+            life_area=life_area,
+            natal_chart_placements=natal_chart_placements
+        )
+
+        # 4. Call the LLM
+        llm_response = openai_client.chat.completions.create(
+            model="gpt-4o-mini", # Using the same model as other interpretation endpoints
+            messages=[{"role": "user", "content": prompt_text}],
+            response_format={"type": "json_object"}
+        )
+
+        response_content = llm_response.choices[0].message.content
+        relevant_placements_data = json.loads(response_content)
+
+        # REPLACE WITH THIS LOGIC TO PRESERVE THE "BEAUTIFUL" STRUCTURE
+        # 5. Extract the components from the first placement chosen by the LLM
+        selected_placements = relevant_placements_data.get("relevant_placements", [])
+
+        if not selected_placements:
+            return [] # Return an empty list if the LLM didn't choose anything
+
+        # Take the full "components" list from the first object the LLM selected
+        first_choice = selected_placements[0]
+        components_to_return = first_choice.get("components", [])
+
+        # Validate the components before returning them
+        validated_components = [
+            ComponentInput(type=c['type'], id=c['id'])
+            for c in components_to_return
+        ]
+
+        return validated_components
+
+
+    except (UpstreamServiceError, InvalidBirthDataError, ComponentNotFoundError) as e:
+        # Re-raise known application-specific exceptions
+        raise e
+    except OpenAIError as e:
+        # Handle specific OpenAI errors
+        if "rate limit" in str(e):
+            raise SynthesisRateLimitError("The synthesis engine is experiencing high demand.")
+        if "content management policy" in str(e):
+            raise SynthesisContentError("The interpretation could not be generated due to a content policy violation.")
+        raise UpstreamServiceError(f"An error occurred with the synthesis engine during placement selection: {e}")
+    except json.JSONDecodeError:
+        raise BadLLMResponseError("The synthesis engine returned a malformed response when finding relevant placements.")
+    except Exception as e:
+        print(f"An unexpected error occurred during relevant placement identification: {e}")
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail="Failed to identify relevant placements.")

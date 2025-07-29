@@ -642,6 +642,38 @@ You are an expert archetypal astrologer. Your task is to describe potential leis
 [VALENCE_DATA]
 """
 
+# --- NEW PROMPT FOR LIFE AREA TO PLACEMENTS MAPPING ---
+LIFE_AREA_TO_PLACEMENTS_PROMPT = """
+You are an expert archetypal astrologer. Your task is to select the 3-5 most relevant astrological features from a provided JSON list that are relevant to a specific "life area."
+
+**Your Task:**
+1.  Analyze the provided "Life Area."
+2.  Review the "User's Natal Chart Placements," which is a JSON list where each object represents a complete astrological feature. Each object contains a "label" for context and a "components" list, which is the critical machine-readable data.
+3.  Select the 3 to 5 objects from the list that have the strongest archetypal connection to the chosen life area. Prioritize features that represent relationships between points (e.g., Planet in House, Planet in Sign, Aspects).
+4.  Your response MUST be a JSON object with a single key, "relevant_placements".
+5.  The value for "relevant_placements" MUST be a list containing the **full, complete, and unmodified JSON objects** that you selected from the input list.
+
+**CRITICAL INSTRUCTIONS:**
+* You must return the entire object for each selection, including the "label" and "components" keys.
+* DO NOT simplify, alter, or extract single parts from the objects. Return them exactly as they were provided.
+* **Prioritize returning objects with 2 or more items in their "components" list.** For example, prefer "Sun in Leo" over just "Sun".
+
+**Example Input Placement:**
+```json
+[
+  {
+    "type": "planet",
+    "id": "sun",
+    "label": "Sun in Leo",
+    "components": [
+      { "type": "planet", "id": "sun" },
+      { "type": "zodiac_sign", "id": "leo" }
+    ]
+  }
+"""
+
+
+
 # --- Dispatcher Dictionaries ---
 # These dictionaries map a determined 'test_type' or 'life_area' to the correct prompt template.
 VALENCE_PROMPTS = {
@@ -830,4 +862,17 @@ class PromptAssembler:
             '[VALENCE_DATA]': chosen_valence.json()
         }
 
+        return self._build_prompt_string(template, replacements)
+
+    def assemble_life_area_to_placements_prompt(self, life_area: str, natal_chart_placements: List[Dict[str, Any]]) -> str:
+        """
+        Assembles the prompt for identifying relevant astrological placements for a given life area.
+        """
+        template = LIFE_AREA_TO_PLACEMENTS_PROMPT
+        
+        # Format natal_chart_placements for the prompt
+        replacements = {
+            '[LIFE_AREA]': life_area,
+            '[NATAL_CHART_PLACEMENTS]': json.dumps(natal_chart_placements, indent=2)
+        }
         return self._build_prompt_string(template, replacements)

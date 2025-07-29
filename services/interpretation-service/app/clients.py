@@ -95,6 +95,8 @@ class CalculationServiceClient:
         Returns the raw JSON response (CalculatedChart object).
         """
         try:
+            print(f"DEBUG: Calling calculation service with base_url: {self._client.base_url}")
+
             response = await self._client.post("/chart", json=chart_request_payload)
             response.raise_for_status() # Raises HTTPStatusError for 4xx/5xx responses
             calculated_chart_data = response.json()

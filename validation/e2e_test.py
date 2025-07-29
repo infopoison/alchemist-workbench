@@ -3,22 +3,15 @@
 import httpx
 import asyncio
 import json
-import random
+import random # Still useful for other potential randomization if needed, but not for initial life area selection
+from typing import List, Dict, Any, Optional 
+
 
 # =============================================================================
 # 1. DEFINE CORE INPUTS FOR THE TEST
 # =============================================================================
 
 # Define a sample birth data object, matching the BirthDataInput schema.
-SAMPLE_BIRTH_DATA = {
-    "name": "Creator",
-    "city": "Dallas",
-    "date": "1995-05-18",
-    "time": "17:41:00",
-    "latitude": 32.7791,
-    "longitude": -96.7969,
-    "timezone": "America/Chicago"
-}
 SAMPLE_BIRTH_DATA = {
     "name": "RV",
     "city": "Santiago",
@@ -29,9 +22,22 @@ SAMPLE_BIRTH_DATA = {
     "timezone": "America/Santiago"
 }
 
+# Define the list of all life areas for testing the new endpoint.
+LIFE_AREAS_FOR_SELECTION = [ # Renamed for clarity, implies user selection
+    "Relationships",
+    "Career",
+    "Self",
+    "Health and Wellness",
+    "Creativity",
+    "Finance",
+    "Family",
+    "Spirituality", # Added for more options
+    "Communication" # Added for more options
+]
+
 # Define the list of all life areas to generate manifestations for.
 # This list is derived from the ManifestationRequest schema.
-LIFE_AREAS = [
+MANIFESTATION_LIFE_AREAS = [
     "psychological_patterns",
     "relational_dynamics",
     "occupational_arenas",
@@ -50,47 +56,26 @@ INTERPRETATION_SERVICE_URL = "http://localhost:8003"
 # 2. HELPER FUNCTIONS
 # =============================================================================
 
-def find_first_square_aspect(chart_data: dict):
-    """
-    Parses the full chart data to find the first 'square' aspect.
-    This simulates a user looking at their chart and picking an interesting
-    feature to explore.
+def select_life_area_for_e2e_test(life_areas: List[str]) -> Optional[str]:
+    """Prompts the user to choose a life area for the E2E test."""
+    print("\n--- [Test Setup] Please choose a life area for the test run ---")
+    for i, area in enumerate(life_areas):
+        print(f"  [{i + 1}] {area}")
 
-    Args:
-        chart_data: The JSON response from the calculation-service.
+    while True:
+        try:
+            choice = input("\nEnter the number of your choice (or 'q' to quit): ").strip().lower()
+            if choice == 'q':
+                return None
+            
+            choice_idx = int(choice) - 1
+            if 0 <= choice_idx < len(life_areas):
+                return life_areas[choice_idx]
+            else:
+                print("   -> Invalid number. Please try again.")
+        except ValueError:
+            print("   -> Please enter a valid number or 'q'.")
 
-    Returns:
-        A list of component dictionaries for the valence request, or None.
-    """
-    # CORRECTION: The calculation-service returns a CalculatedChart object
-    # with a top-level 'aspects' key, not nested inside a 'data' key.
-    if 'aspects' not in chart_data:
-        print("   -> WARNING: 'aspects' key not found in the chart response from calculation-service.")
-        print(f"      Available keys are: {list(chart_data.keys())}")
-        return None
-
-    aspects = chart_data['aspects']
-    for aspect in aspects:
-        # CORRECTION: The aspect identifier is 'aspect_id', not 'aspect'.
-        if aspect.get("aspect_id") == "square":
-            # CORRECTION: The planet identifiers are 'point_1_id' and 'point_2_id'.
-            p1_name = aspect.get("point_1_id", "").lower().replace("_", "")
-            p2_name = aspect.get("point_2_id", "").lower().replace("_", "")
-
-            # Ensure we are dealing with standard planets for a clean test
-            # and avoid complex points like 'mean_lilith' or nodes initially.
-            valid_planets = {"sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto"}
-            if p1_name in valid_planets and p2_name in valid_planets:
-                signature = [
-                    {"type": "planet", "id": p1_name},
-                    {"type": "dynamic", "id": "square"},
-                    {"type": "planet", "id": p2_name}
-                ]
-                print(f"   -> Found a testable 'square' aspect: {p1_name.capitalize()} square {p2_name.capitalize()}.")
-                return signature
-    
-    print("   -> WARNING: No 'square' aspect between major planets found in the chart data.")
-    return None
 
 # =============================================================================
 # 3. MAIN ASYNCHRONOUS TEST FUNCTION
@@ -98,34 +83,35 @@ def find_first_square_aspect(chart_data: dict):
 
 async def main():
     """
-    Runs the end-to-end test simulation for the Alchemical Workbench API.
+    Runs the end-to-end test simulation for the Alchemical Workbench API,
+    now incorporating the /life-areas/find-relevant-placements endpoint and user selection.
     """
-    print("🚀 Starting Alchemical Workbench End-to-End Test (Corrected Flow)...\n")
-    signature_components = None
+    print("🚀 Starting Alchemical Workbench End-to-End Test (New Workflow)...\n")
+    
+    selected_life_area = select_life_area_for_e2e_test(LIFE_AREAS_FOR_SELECTION)
+    if not selected_life_area:
+        print("Test aborted by user.")
+        return
+    print(f"-> User selected life area for testing: '{selected_life_area}'\n")
 
-    async with httpx.AsyncClient(timeout=30.0) as client:
+    natal_chart_for_placements = None
+    relevant_placements = []
+    chosen_placement_for_valence = None
+    chosen_valence = None
+
+    async with httpx.AsyncClient(timeout=60.0) as client: # Increased timeout for LLM calls
         # ---------------------------------------------------------------------
         # STAGE 1: Call Calculation Service to get the full natal chart
+        # This chart is needed to pass to the /life-areas/find-relevant-placements endpoint
         # ---------------------------------------------------------------------
-        print("--- [Stage 1/5] Simulating Chart Calculation ---")
+        print("--- [Stage 1/6] Simulating Chart Calculation ---")
         try:
             print(f"-> Sending birth data to Calculation Service at {CALCULATION_SERVICE_URL}/chart...")
             calc_response = await client.post(f"{CALCULATION_SERVICE_URL}/chart", json=SAMPLE_BIRTH_DATA)
             calc_response.raise_for_status()
-            chart_data = calc_response.json()
+            natal_chart_for_placements = calc_response.json()
             print(f"✅ SUCCESS: Calculation Service responded with status {calc_response.status_code}.")
             
-            # -----------------------------------------------------------------
-            # STAGE 2: Dynamically find a signature from the chart data
-            # -----------------------------------------------------------------
-            print("\n--- [Stage 2/5] Simulating User Feature Discovery ---")
-            print("-> Parsing the returned chart data to find an interesting aspect to analyze...")
-            signature_components = find_first_square_aspect(chart_data)
-
-            if not signature_components:
-                print("❌ ERROR: Could not find a suitable aspect in the chart to test. Halting.")
-                return
-
         except httpx.HTTPStatusError as e:
             print(f"❌ ERROR: Calculation Service returned a {e.response.status_code} status.")
             print(f"   Response: {e.response.text}")
@@ -135,28 +121,66 @@ async def main():
             return
 
         # ---------------------------------------------------------------------
-        # STAGE 3: Call Interpretation Service for Valences
+        # STAGE 2: Call Interpretation Service to find relevant placements for a life area
+        # This is the new endpoint being tested.
         # ---------------------------------------------------------------------
-        print("\n--- [Stage 3/5] Simulating Valence Generation ---")
+        print(f"\n--- [Stage 2/6] Finding Relevant Placements for '{selected_life_area}' ---")
+        try:
+            print(f"-> Requesting relevant placements from Interpretation Service at {INTERPRETATION_SERVICE_URL}/life-areas/find-relevant-placements...")
+            
+            relevant_placements_response = await client.post(
+                f"{INTERPRETATION_SERVICE_URL}/life-areas/find-relevant-placements?life_area={selected_life_area}",
+                json=SAMPLE_BIRTH_DATA
+            )
+            relevant_placements_response.raise_for_status()
+            relevant_placements = relevant_placements_response.json()
+            
+            print(f"✅ SUCCESS: Interpretation Service responded with status {relevant_placements_response.status_code}.")
+            print(f"--- RAW RESPONSE FROM LLM ---\n{relevant_placements}\n-----------------------------")
+            if not relevant_placements:
+                print(f"❌ ERROR: No relevant placements returned for '{selected_life_area}'. Halting.")
+                return
+            
+            formatted_placements = [f'{p.get("type")}:{p.get("id")}' for p in relevant_placements]
+            print(f"   -> LLM suggested relevant placements: {formatted_placements}")
+
+            # For the purpose of this automated test, we'll just pick the first one.
+            chosen_placement_for_valence = relevant_placements[0]
+            print(f"   -> Automatically selected the first relevant placement for further analysis: '{chosen_placement_for_valence.get('type')}:{chosen_placement_for_valence.get('id')}'")
+
+        except httpx.HTTPStatusError as e:
+            print(f"❌ ERROR: Interpretation Service (/life-areas/find-relevant-placements) returned a {e.response.status_code} status.")
+            print(f"   Response: {e.response.text}")
+            print(f"   Error Details: {e.response.text}") # Added for more detail
+            return
+        except (httpx.RequestError, json.JSONDecodeError) as e:
+            print(f"❌ ERROR: An issue occurred while finding relevant placements: {e}")
+            return
+        
+        # ---------------------------------------------------------------------
+        # STAGE 3: Call Interpretation Service for Valences (using the chosen relevant placement)
+        # ---------------------------------------------------------------------
+        print("\n--- [Stage 3/6] Simulating Valence Generation ---")
+        print(f"   -> LLM chose the following placement for further analysis: {relevant_placements}")
+
         valence_payload = {
-            "components": signature_components,
+            "components": relevant_placements, # Pass the ENTIRE list directly
             "birth_data": SAMPLE_BIRTH_DATA
         }
-        chosen_valence = None
         try:
-            print(f"-> Sending dynamically found signature to Interpretation Service at {INTERPRETATION_SERVICE_URL}/interpret/valences...")
+            print(f"-> Sending selected placement to Interpretation Service at {INTERPRETATION_SERVICE_URL}/interpret/valences...")
             valence_response = await client.post(f"{INTERPRETATION_SERVICE_URL}/interpret/valences", json=valence_payload)
             valence_response.raise_for_status()
-            print(f"✅ SUCCESS: Interpretation Service responded with status {valence_response.status_code}.")
+            print(f"✅ SUCCESS: Interpretation Service (Valence) responded with status {valence_response.status_code}.")
             
             valences = valence_response.json().get("valences", [])
             if not valences:
-                print("❌ ERROR: Valence response contained no valences to choose from.")
+                print("❌ ERROR: Valence response contained no valences to choose from. Halting.")
                 return
             
             # Programmatically select the first valence to simulate user choice
             chosen_valence = valences[0]
-            print(f"\n--- [Stage 4/5] Simulating User Valence Selection ---")
+            print(f"\n--- [Stage 4/6] Simulating User Valence Selection ---")
             print(f"-> If the user had selected the first option, they would choose the '{chosen_valence['archetype']}' valence.")
             print(f"   Description: \"{chosen_valence['description']}\"")
 
@@ -171,11 +195,11 @@ async def main():
         # ---------------------------------------------------------------------
         # STAGE 5: Loop and Call for Manifestations for the chosen valence
         # ---------------------------------------------------------------------
-        if chosen_valence:
-            print("\n--- [Stage 5/5] Simulating Manifestation Generation for all Life Areas ---")
-            for area in LIFE_AREAS:
+        if chosen_valence and chosen_placement_for_valence:
+            print("\n--- [Stage 5/6] Simulating Manifestation Generation for all Life Areas ---")
+            for area in MANIFESTATION_LIFE_AREAS: # Use the specific list for manifestations
                 manifestation_payload = {
-                    "components": signature_components,
+                    "components": [chosen_placement_for_valence],
                     "chosen_valence": chosen_valence,
                     "life_area": area,
                     "birth_data": SAMPLE_BIRTH_DATA
@@ -194,7 +218,19 @@ async def main():
                     if manifestations:
                         for i, manifest in enumerate(manifestations):
                             m_type = manifest.get('type', 'N/A').upper()
-                            m_name = manifest.get('pattern_name', manifest.get('dynamic_name', 'Unknown'))
+                            
+                            # Check all possible name keys before defaulting to "Unknown".
+                            name_keys = [
+                                'pattern_name', 'dynamic_name', 'arena_name', 
+                                'expression_name', 'manifestation_name', 
+                                'style_name', 'activity_name'
+                            ]
+                            m_name = 'Unknown'
+                            for key in name_keys:
+                                if key in manifest:
+                                    m_name = manifest[key]
+                                    break
+                            
                             m_desc = manifest.get('description', 'No description provided.')
                             print(f"   [{m_type}] {m_name}: {m_desc}")
                     else:
