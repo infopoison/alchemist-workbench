@@ -6,7 +6,8 @@ from typing import List, Dict, Any, Set
 # 1. CONFIGURATION CONSTANTS
 # =============================================================================
 PLANET_IDS: Set[str] = {"sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto"}
-NODE_IDS: Set[str] = {"mean_node", "mean_south_node"}
+NODE_IDS: Set[str] = {"north_node", "south_node"}
+ANGLE_IDS: Set[str] = {"ascendant", "imum_coeli", "descendant", "midheaven"}
 ASTEROID_IDS: Set[str] = {"chiron", "mean_lilith"}
 
 # This map is required to translate sign abbreviations from the API.
@@ -14,6 +15,12 @@ SIGN_ABBREVIATION_MAP: Dict[str, str] = {
     "ari": "aries", "tau": "taurus", "gem": "gemini", "can": "cancer",
     "leo": "leo", "vir": "virgo", "lib": "libra", "sco": "scorpio",
     "sag": "sagittarius", "cap": "capricorn", "aqu": "aquarius", "pis": "pisces"
+}
+
+HOUSE_ABBREVIATION_MAP: Dict[str, str] = {
+    "first": "1", "second": "2", "third" : "3", "fourth" : "4", "fifth" : "5",
+    "sixth" : "6", "seventh" : "7", "eighth" : "8", "ninth" : "9", "tenth" : "10",
+    "eleventh" : "11", "twelfth" : "12"
 }
 
 # =============================================================================
@@ -61,6 +68,7 @@ def _extract_points_in_signs(points_map: Dict[str, Any]) -> List[Dict]:
             continue
         
         point_type = "node" if point_id in NODE_IDS else \
+                     "angle" if point_id in ANGLE_IDS else \
                      "asteroid" if point_id in ASTEROID_IDS else \
                      "planet"
 
@@ -71,27 +79,35 @@ def _extract_points_in_signs(points_map: Dict[str, Any]) -> List[Dict]:
     return features
 
 def _extract_points_in_houses(points_map: Dict[str, Any]) -> List[Dict]:
-    """Extracts all celestial points in houses."""
+    """
+    Extracts all celestial points in houses, *excluding angles* as their house
+    placement is inherently defined by their nature.
+    """
     features = []
     for point_id, point_info in points_map.items():
-        house_info = point_info.get("house")
-        if not house_info:
-            continue
+        if point_id in ANGLE_IDS: 
+            continue 
 
-        house_id = house_info.get("id")
-        if not house_id:
-            continue
 
-        numeric_house_id = house_id.replace('_house', '')
+        house_info = point_info.get("house") #
+        if not house_info: #
+            continue #
+
+        house_id = house_info.get("id") #
+        if not house_id: #
+            continue #
+
+        numeric_house_id = house_id.replace('_house', '') #
+        numeric_house_id = HOUSE_ABBREVIATION_MAP.get(numeric_house_id) #
         point_type = "node" if point_id in NODE_IDS else \
                      "asteroid" if point_id in ASTEROID_IDS else \
-                     "planet"
+                     "planet" #
 
-        features.append({
-            "display": f"{point_info.get('name')} in {house_info.get('name')}",
-            "components": [{"type": point_type, "id": point_id}, {"type": "house", "id": numeric_house_id}]
+        features.append({ #
+            "display": f"{point_info.get('name')} in {house_info.get('name')}", #
+            "components": [{"type": point_type, "id": point_id}, {"type": "house", "id": numeric_house_id}] #
         })
-    return features
+    return features 
 
 def _extract_signs_on_houses(houses_map: Dict[str, Any]) -> List[Dict]:
     """Extracts the sign on each house cusp, using the abbreviation map."""
@@ -108,6 +124,7 @@ def _extract_signs_on_houses(houses_map: Dict[str, Any]) -> List[Dict]:
             continue
         
         numeric_house_id = house_id.replace('_house', '')
+        numeric_house_id = HOUSE_ABBREVIATION_MAP.get(numeric_house_id)
         
         features.append({
             "display": f"{sign_full_name.capitalize()} on {house_info.get('name')} Cusp",
