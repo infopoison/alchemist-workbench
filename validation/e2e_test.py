@@ -15,6 +15,16 @@ SAMPLE_BIRTH_DATA = {
     "name": "RV",
     "city": "Santiago",
     "date": "1970-08-06",
+    "time": "17:41:00",
+    "latitude": 32.779,
+    "longitude": -96.808,
+    "timezone": "America/Chicago"
+}
+
+SAMPLE_BIRTH_DATA = {
+    "name": "Creator",
+    "city": "Dallas",
+    "date": "1995-05-18",
     "time": "00:00:00",
     "latitude": -33.447,
     "longitude": -70.673,

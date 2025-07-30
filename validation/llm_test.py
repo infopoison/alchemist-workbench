@@ -10,7 +10,7 @@ from typing import List, Dict, Any, Optional
 # =============================================================================
 
 INTERPRETATION_SERVICE_URL = "http://localhost:8003"
-CHART_DATA_FILE = "test_chart_RV.json" # Path to the stored natal chart JSON file
+CHART_DATA_FILE = "birth_data_creator.json" # Path to the stored natal chart JSON file
 
 # Define the list of all life areas for testing.
 LIFE_AREAS_FOR_SELECTION = [
