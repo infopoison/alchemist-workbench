@@ -3,8 +3,7 @@
 import httpx
 import asyncio
 import json
-import random # Still useful for other potential randomization if needed, but not for initial life area selection
-from typing import List, Dict, Any, Optional 
+from typing import List, Dict, Any, Optional
 
 
 # =============================================================================
@@ -23,7 +22,7 @@ SAMPLE_BIRTH_DATA = {
 }
 
 # Define the list of all life areas for testing the new endpoint.
-LIFE_AREAS_FOR_SELECTION = [ # Renamed for clarity, implies user selection
+LIFE_AREAS_FOR_SELECTION = [
     "Relationships",
     "Career",
     "Self",
@@ -31,20 +30,8 @@ LIFE_AREAS_FOR_SELECTION = [ # Renamed for clarity, implies user selection
     "Creativity",
     "Finance",
     "Family",
-    "Spirituality", # Added for more options
-    "Communication" # Added for more options
-]
-
-# Define the list of all life areas to generate manifestations for.
-# This list is derived from the ManifestationRequest schema.
-MANIFESTATION_LIFE_AREAS = [
-    "psychological_patterns",
-    "relational_dynamics",
-    "occupational_arenas",
-    "creative_expression",
-    "health_and_wellness",
-    "financial_style",
-    "leisure_and_hobbies"
+    "Spirituality",
+    "Communication"
 ]
 
 # Define base URLs for the running services.
@@ -53,7 +40,7 @@ INTERPRETATION_SERVICE_URL = "http://localhost:8003"
 
 
 # =============================================================================
-# 2. HELPER FUNCTIONS
+# 2. HELPER FUNCTIONS FOR USER SELECTION
 # =============================================================================
 
 def select_life_area_for_e2e_test(life_areas: List[str]) -> Optional[str]:
@@ -76,6 +63,47 @@ def select_life_area_for_e2e_test(life_areas: List[str]) -> Optional[str]:
         except ValueError:
             print("   -> Please enter a valid number or 'q'.")
 
+def select_placement_for_analysis(placements: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    """Prompts the user to choose a relevant placement for analysis."""
+    print("\n--- Please choose a relevant placement for analysis ---")
+    formatted_placements = [p.get("display", "Unknown Placement") for p in placements]
+    for i, placement_display in enumerate(formatted_placements):
+        print(f"  [{i + 1}] {placement_display}")
+
+    while True:
+        try:
+            choice = input("\nEnter the number of your choice (or 'q' to quit): ").strip().lower()
+            if choice == 'q':
+                return None
+            
+            choice_idx = int(choice) - 1
+            if 0 <= choice_idx < len(placements):
+                return placements[choice_idx]
+            else:
+                print("   -> Invalid number. Please try again.")
+        except ValueError:
+            print("   -> Please enter a valid number or 'q'.")
+
+def select_valence_to_continue(valences: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    """Prompts the user to choose a valence to continue the test."""
+    print("\n--- Please choose a valence to continue ---")
+    for i, valence in enumerate(valences):
+        print(f"  [{i+1}] {valence.get('archetype', 'N/A')}: {valence.get('description', 'No description.')}")
+    
+    while True:
+        try:
+            choice = input("\nEnter the number of your choice (or 'q' to quit): ").strip().lower()
+            if choice == 'q':
+                return None
+            
+            choice_idx = int(choice) - 1
+            if 0 <= choice_idx < len(valences):
+                return valences[choice_idx]
+            else:
+                print("   -> Invalid number. Please try again.")
+        except ValueError:
+            print("   -> Please enter a valid number or 'q'.")
+
 
 # =============================================================================
 # 3. MAIN ASYNCHRONOUS TEST FUNCTION
@@ -84,9 +112,9 @@ def select_life_area_for_e2e_test(life_areas: List[str]) -> Optional[str]:
 async def main():
     """
     Runs the end-to-end test simulation for the Alchemical Workbench API,
-    now incorporating the /life-areas/find-relevant-placements endpoint and user selection.
+    now incorporating user selection for placements and valences.
     """
-    print("🚀 Starting Alchemical Workbench End-to-End Test (New Workflow)...\n")
+    print("🚀 Starting Alchemical Workbench End-to-End Test (Interactive Workflow)...\n")
     
     selected_life_area = select_life_area_for_e2e_test(LIFE_AREAS_FOR_SELECTION)
     if not selected_life_area:
@@ -98,11 +126,11 @@ async def main():
     relevant_placements = []
     chosen_placement_for_valence = None
     chosen_valence = None
+    valences = []
 
-    async with httpx.AsyncClient(timeout=60.0) as client: # Increased timeout for LLM calls
+    async with httpx.AsyncClient(timeout=60.0) as client:
         # ---------------------------------------------------------------------
         # STAGE 1: Call Calculation Service to get the full natal chart
-        # This chart is needed to pass to the /life-areas/find-relevant-placements endpoint
         # ---------------------------------------------------------------------
         print("--- [Stage 1/6] Simulating Chart Calculation ---")
         try:
@@ -110,6 +138,7 @@ async def main():
             calc_response = await client.post(f"{CALCULATION_SERVICE_URL}/chart", json=SAMPLE_BIRTH_DATA)
             calc_response.raise_for_status()
             natal_chart_for_placements = calc_response.json()
+            print('Natal Chart', natal_chart_for_placements)
             print(f"✅ SUCCESS: Calculation Service responded with status {calc_response.status_code}.")
             
         except httpx.HTTPStatusError as e:
@@ -121,8 +150,7 @@ async def main():
             return
 
         # ---------------------------------------------------------------------
-        # STAGE 2: Call Interpretation Service to find relevant placements for a life area
-        # This is the new endpoint being tested.
+        # STAGE 2: Find relevant placements and get user selection
         # ---------------------------------------------------------------------
         print(f"\n--- [Stage 2/6] Finding Relevant Placements for '{selected_life_area}' ---")
         try:
@@ -134,35 +162,34 @@ async def main():
             )
             relevant_placements_response.raise_for_status()
             response_data = relevant_placements_response.json()
+            
+            print(f"--- RAW RESPONSE FROM LLM ---\n{json.dumps(response_data, indent=2)}\n-----------------------------")
+            
             relevant_placements = response_data.get('component_placements', [])
-
-            #print(f"✅ SUCCESS: Interpretation Service responded with status {relevant_placements_response.status_code}.")
-            print(f"--- RAW RESPONSE FROM LLM ---\n{response_data}\n-----------------------------")
             if not relevant_placements:
                 print(f"❌ ERROR: No relevant placements returned for '{selected_life_area}'. Halting.")
                 return
             
-            formatted_placements = [p.get("display", "Unknown Placement") for p in relevant_placements]
-            print(f"   -> LLM suggested relevant placements: {formatted_placements}")
-
-            # For the purpose of this automated test, we'll just pick the first one.
-            chosen_placement_for_valence = relevant_placements[0]
-            print(f"   -> Automatically selected the first relevant placement for further analysis: '{chosen_placement_for_valence.get('display')}'")
+            # NEW: Prompt user to select a placement
+            chosen_placement_for_valence = select_placement_for_analysis(relevant_placements)
+            if not chosen_placement_for_valence:
+                print("Test aborted by user.")
+                return
+            print(f"   -> User selected placement for further analysis: '{chosen_placement_for_valence.get('display')}'")
 
         except httpx.HTTPStatusError as e:
-            print(f"❌ ERROR: Interpretation Service (/life-areas/find-relevant-placements) returned a {e.response.status_code} status.")
+            print(f"❌ ERROR: Interpretation Service (/life-areas) returned a {e.response.status_code} status.")
             print(f"   Response: {e.response.text}")
-            print(f"   Error Details: {e.response.text}") # Added for more detail
             return
         except (httpx.RequestError, json.JSONDecodeError) as e:
             print(f"❌ ERROR: An issue occurred while finding relevant placements: {e}")
             return
         
         # ---------------------------------------------------------------------
-        # STAGE 3: Call Interpretation Service for Valences (using the chosen relevant placement)
+        # STAGE 3: Call Interpretation Service for Valences
         # ---------------------------------------------------------------------
         print("\n--- [Stage 3/6] Simulating Valence Generation ---")
-        print(f"   -> Using the automatically selected placement for valence generation: '{chosen_placement_for_valence.get('display')}'")
+        print(f"   -> Using the selected placement for valence generation: '{chosen_placement_for_valence.get('display')}'")
 
         chosen_placement_components = chosen_placement_for_valence.get("components", [])
         valence_payload = {
@@ -181,16 +208,6 @@ async def main():
                 print("❌ ERROR: Valence response contained no valences to choose from. Halting.")
                 return
             
-            # Programmatically select the first valence to simulate user choice
-            chosen_valence = valences[0]
-            print(f"\n--- [Stage 4/6] Displaying All Generated Valences & Simulating Selection ---")
-            print("-> All valences received from the interpretation service:")
-            for i, valence in enumerate(valences):
-                print(f"  [{i+1}] {valence.get('archetype', 'N/A')}: {valence.get('description', 'No description.')}")
-
-            # The script will still proceed by automatically selecting the first valence
-            print(f"\n-> Automatically selecting the first valence to continue: '{chosen_valence.get('archetype')}'")
-            
         except httpx.HTTPStatusError as e:
             print(f"❌ ERROR: Interpretation Service (Valence) returned a {e.response.status_code} status.")
             print(f"   Response: {e.response.text}")
@@ -200,56 +217,17 @@ async def main():
             return
 
         # ---------------------------------------------------------------------
-        # STAGE 5: Loop and Call for Manifestations for the chosen valence
+        # STAGE 4: Display all generated valences and get user selection
         # ---------------------------------------------------------------------
-        """
-        if chosen_valence and chosen_placement_for_valence:
-            print("\n--- [Stage 5/6] Simulating Manifestation Generation for all Life Areas ---")
-            for area in MANIFESTATION_LIFE_AREAS: # Use the specific list for manifestations
-                manifestation_payload = {
-                    "components": [chosen_placement_for_valence],
-                    "chosen_valence": chosen_valence,
-                    "life_area": area,
-                    "birth_data": SAMPLE_BIRTH_DATA
-                }
-                try:
-                    print(f"\n-> Generating manifestations for life area: '{area}'...")
-                    manifest_response = await client.post(
-                        f"{INTERPRETATION_SERVICE_URL}/interpret/manifestations", 
-                        json=manifestation_payload
-                    )
-                    manifest_response.raise_for_status()
-                    print(f"✅ SUCCESS: Received manifestations for '{area}' (Status: {manifest_response.status_code}).")
-                    
-                    # Print the results in a user-friendly format
-                    manifestations = manifest_response.json().get('manifestations', [])
-                    if manifestations:
-                        for i, manifest in enumerate(manifestations):
-                            m_type = manifest.get('type', 'N/A').upper()
-                            
-                            # Check all possible name keys before defaulting to "Unknown".
-                            name_keys = [
-                                'pattern_name', 'dynamic_name', 'arena_name', 
-                                'expression_name', 'manifestation_name', 
-                                'style_name', 'activity_name'
-                            ]
-                            m_name = 'Unknown'
-                            for key in name_keys:
-                                if key in manifest:
-                                    m_name = manifest[key]
-                                    break
-                            
-                            m_desc = manifest.get('description', 'No description provided.')
-                            print(f"   [{m_type}] {m_name}: {m_desc}")
-                    else:
-                        print("   -> No manifestations returned for this life area.")
-
-                except httpx.HTTPStatusError as e:
-                    print(f"❌ ERROR on '{area}': Service returned {e.response.status_code}.")
-                    print(f"   Response: {e.response.text}")
-                except (httpx.RequestError, json.JSONDecodeError) as e:
-                    print(f"❌ ERROR on '{area}': An issue occurred: {e}")
-        """
+        print(f"\n--- [Stage 4/6] Displaying All Generated Valences & Simulating Selection ---")
+        
+        # NEW: Prompt user to select a valence
+        chosen_valence = select_valence_to_continue(valences)
+        if not chosen_valence:
+            print("Test aborted by user.")
+            return
+        
+        print(f"\n-> User selected the following valence to continue: '{chosen_valence.get('archetype')}'")
 
     print("\n\n✨ End-to-End Test Simulation Complete. ✨")
 
