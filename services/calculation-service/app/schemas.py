@@ -1,7 +1,7 @@
 # /services/calculation-service/app/schemas.py
 
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 import uuid
 
 # --- Request & Response Schemas ---
@@ -10,7 +10,7 @@ class ChartRequest(BaseModel):
     name: str = Field(..., example="John Doe")
     city: str = Field(..., example="Los Angeles")
     date: str = Field(..., example="1990-10-28")
-    time: str = Field(..., example="09:30:00")
+    time: Optional[str] = Field(default=None, example="09:30:00")
     latitude: float = Field(..., example=34.0522)
     longitude: float = Field(..., example=-118.2437)
     timezone: str = Field(..., example="America/Los_Angeles")
@@ -20,7 +20,7 @@ class EngineMetadata(BaseModel):
 
 class Subject(BaseModel):
     date: str
-    time: str
+    time: Optional[str] = None # CHANGED: Made time optional
     latitude: float
     longitude: float
     timezone: str
@@ -41,7 +41,7 @@ class CelestialPoint(BaseModel):
     speed: float
     is_retrograde: bool
     zodiac_sign: ZodiacSign
-    house: House
+    house: Optional[House] = None # CHANGED: Made house optional
 
 class HouseCusp(BaseModel):
     id: str
@@ -62,5 +62,6 @@ class CalculatedChart(BaseModel):
     engine_metadata: EngineMetadata
     subject: Subject
     celestial_points: List[CelestialPoint]
-    houses: List[HouseCusp]
+    houses: Optional[List[HouseCusp]] = None
     aspects: List[Aspect]
+    chart_type: Optional[str] = None

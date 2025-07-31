@@ -10,7 +10,7 @@ from typing import List, Dict, Any, Optional
 # =============================================================================
 
 INTERPRETATION_SERVICE_URL = "http://localhost:8003"
-CHART_DATA_FILE = "birth_data_creator.json" # Path to the stored natal chart JSON file
+CHART_DATA_FILE = "test_chart_creator.json" # Path to the stored natal chart JSON file
 
 # Define the list of all life areas for testing.
 LIFE_AREAS_FOR_SELECTION = [
@@ -29,45 +29,16 @@ LIFE_AREAS_FOR_SELECTION = [
 # 2. HELPER FUNCTIONS
 # =============================================================================
 
-def load_birth_data_from_chart_file(filename: str) -> Optional[Dict[str, Any]]:
+def load_full_chart_from_file(filename: str) -> Optional[Dict[str, Any]]:
     """
-    Loads a full natal chart from a JSON file and extracts the birth data
-    from the 'subject' key, formatting it for API consumption.
+    Loads a full natal chart object from a JSON file.
     """
     try:
         with open(filename, 'r') as f:
             print(f"-> Loading full natal chart from '{filename}'...")
             full_chart = json.load(f)
-
-        # The API endpoints expect a birth_data object. We extract this from
-        # the 'subject' field of the stored chart.
-        if 'subject' in full_chart:
-            subject_data = full_chart['subject']
-            
-            # Construct the birth_data payload required by the Interpretation Service.
-            # We add default 'name' and 'city' if they aren't in the 'subject' object.
-            birth_data = {
-                "name": subject_data.get("name", "RV"),
-                "city": subject_data.get("city", "Santiago"),
-                "date": subject_data.get("date"),
-                "time": subject_data.get("time"),
-                "latitude": subject_data.get("latitude"),
-                "longitude": subject_data.get("longitude"),
-                "timezone": subject_data.get("timezone")
-            }
-            
-            # Quick validation to ensure critical fields were found.
-            required_keys = ["date", "time", "latitude", "longitude", "timezone"]
-            if not all(key in birth_data and birth_data[key] is not None for key in required_keys):
-                print(f"❌ ERROR: The 'subject' object in '{filename}' is missing required data.")
-                return None
-            
-            print("✅ SUCCESS: Extracted birth data from the chart file.")
-            return birth_data
-        else:
-            print(f"❌ ERROR: Could not find the 'subject' key in '{filename}'.")
-            return None
-
+        print("✅ SUCCESS: Loaded full chart object.")
+        return full_chart
     except FileNotFoundError:
         print(f"❌ ERROR: The chart data file '{filename}' was not found.")
         return None
@@ -152,13 +123,12 @@ async def main():
     
     # STAGE 1: Load Birth Data from the local JSON file.
     # This replaces the call to the Calculation Service.
-    print("--- [Stage 1/4] Loading Birth Data from File ---")
-    birth_data_for_api = load_birth_data_from_chart_file(CHART_DATA_FILE)
-    if not birth_data_for_api:
-        print("Test aborted. Could not load valid birth data from the file.")
+    print("--- [Stage 1/4] Loading Full Chart Data from File ---")
+    full_chart_for_api = load_full_chart_from_file(CHART_DATA_FILE)
+    if not full_chart_for_api:
+        print("Test aborted. Could not load chart from file.")
         return
 
-    # Prompt user to select a life area to test.
     selected_life_area = select_life_area_for_test(LIFE_AREAS_FOR_SELECTION)
     if not selected_life_area:
         print("Test aborted by user.")
@@ -167,27 +137,25 @@ async def main():
 
     async with httpx.AsyncClient(timeout=60.0) as client:
         # ---------------------------------------------------------------------
-        # STAGE 2: Find relevant placements and get user selection.
+        # STAGE 2: Find relevant placements.
         # ---------------------------------------------------------------------
         print(f"--- [Stage 2/4] Finding Relevant Placements for '{selected_life_area}' ---")
-        relevant_placements = []
-        chosen_placement_for_valence = None
         try:
-            print(f"-> Requesting relevant placements from Interpretation Service...")
+            print(f"-> Sending full chart object to Interpretation Service...")
             
+            # --- CHANGED: Send the full chart object, not just birth data ---
             relevant_placements_response = await client.post(
                 f"{INTERPRETATION_SERVICE_URL}/life-areas/find-relevant-placements?life_area={selected_life_area}",
-                json=birth_data_for_api  # Use the data loaded from the file
+                json=full_chart_for_api
             )
             relevant_placements_response.raise_for_status()
             response_data = relevant_placements_response.json()
             
             relevant_placements = response_data.get('component_placements', [])
             if not relevant_placements:
-                print(f"❌ ERROR: No relevant placements were returned for '{selected_life_area}'. Halting.")
+                print(f"❌ ERROR: No relevant placements were returned. Halting.")
                 return
             
-            # Prompt user to select a placement from the returned list.
             chosen_placement_for_valence = select_placement_for_analysis(relevant_placements)
             if not chosen_placement_for_valence:
                 print("Test aborted by user.")
@@ -201,16 +169,28 @@ async def main():
         except (httpx.RequestError, json.JSONDecodeError) as e:
             print(f"❌ ERROR: An issue occurred while finding relevant placements: {e}")
             return
+
         
         # ---------------------------------------------------------------------
         # STAGE 3: Call Interpretation Service for Valences.
         # ---------------------------------------------------------------------
         print("\n--- [Stage 3/4] Simulating Valence Generation ---")
-        valences = []
         try:
+            # --- CHANGED: Extract the 'subject' from the full chart for this specific payload ---
+            subject_data = full_chart_for_api.get("subject")
+            birth_data_for_valence = {
+                "name": "Anonymous", 
+                "city": "Unknown", 
+                "date": subject_data.get("date"),
+                "time": subject_data.get("time"),
+                "latitude": subject_data.get("latitude"),
+                "longitude": subject_data.get("longitude"),
+                "timezone": subject_data.get("timezone")
+            }
+
             valence_payload = {
                 "components": chosen_placement_for_valence.get("components", []), 
-                "birth_data": birth_data_for_api 
+                "birth_data": birth_data_for_valence
             }
             
             print(f"-> Sending selected placement to Interpretation Service for valences...")
@@ -219,7 +199,7 @@ async def main():
             
             valences = valence_response.json().get("valences", [])
             if not valences:
-                print("❌ ERROR: Response contained no valences to choose from. Halting.")
+                print("❌ ERROR: Response contained no valences. Halting.")
                 return
             print(f"✅ SUCCESS: Interpretation Service (Valence) responded with status {valence_response.status_code}.")
 
@@ -230,6 +210,7 @@ async def main():
         except (httpx.RequestError, json.JSONDecodeError) as e:
             print(f"❌ ERROR: An issue occurred during the valence request: {e}")
             return
+
 
         # ---------------------------------------------------------------------
         # STAGE 4: Display generated valences and get user selection.

@@ -15,6 +15,16 @@ SAMPLE_BIRTH_DATA = {
     "name": "RV",
     "city": "Santiago",
     "date": "1970-08-06",
+    "latitude": -33.447,
+    "longitude": -70.673,
+    "timezone": "America/Santiago"
+}
+
+
+SAMPLE_BIRTH_DATA = {
+    "name": "Creator",
+    "city": "Dallas",
+    "date": "1995-05-18",
     "time": "17:41:00",
     "latitude": 32.779,
     "longitude": -96.808,
@@ -22,14 +32,14 @@ SAMPLE_BIRTH_DATA = {
 }
 
 SAMPLE_BIRTH_DATA = {
-    "name": "Creator",
-    "city": "Dallas",
-    "date": "1995-05-18",
-    "time": "00:00:00",
-    "latitude": -33.447,
-    "longitude": -70.673,
-    "timezone": "America/Santiago"
+    "name": "GB",
+    "city": "Tulsa",
+    "date": "1962-02-07",
+    "latitude": 36.154,
+    "longitude": -95.992,
+    "timezone": "America/Chicago"
 }
+
 
 # Define the list of all life areas for testing the new endpoint.
 LIFE_AREAS_FOR_SELECTION = [
@@ -168,8 +178,9 @@ async def main():
             
             relevant_placements_response = await client.post(
                 f"{INTERPRETATION_SERVICE_URL}/life-areas/find-relevant-placements?life_area={selected_life_area}",
-                json=SAMPLE_BIRTH_DATA
+                json=natal_chart_for_placements
             )
+
             relevant_placements_response.raise_for_status()
             response_data = relevant_placements_response.json()
             
@@ -180,7 +191,6 @@ async def main():
                 print(f"❌ ERROR: No relevant placements returned for '{selected_life_area}'. Halting.")
                 return
             
-            # NEW: Prompt user to select a placement
             chosen_placement_for_valence = select_placement_for_analysis(relevant_placements)
             if not chosen_placement_for_valence:
                 print("Test aborted by user.")
@@ -193,8 +203,7 @@ async def main():
             return
         except (httpx.RequestError, json.JSONDecodeError) as e:
             print(f"❌ ERROR: An issue occurred while finding relevant placements: {e}")
-            return
-        
+            return  
         # ---------------------------------------------------------------------
         # STAGE 3: Call Interpretation Service for Valences
         # ---------------------------------------------------------------------

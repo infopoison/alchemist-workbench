@@ -4,7 +4,8 @@ import httpx
 import os
 import json
 from tenacity import retry, stop_after_attempt, wait_exponential
-import uuid # Make sure uuid is imported here
+import uuid
+from typing import Optional # Import Optional for clarity, though not strictly needed here
 from .schemas import ChartRequest, CalculatedChart, EngineMetadata, Subject, CelestialPoint, HouseCusp, Aspect, ZodiacSign, House
 
 
@@ -38,7 +39,13 @@ class AstrologerAPIClient:
         Fetches the natal chart from the external API and maps it to our internal schema.
         """
         date_parts = request_data.date.split('-')
-        time_parts = request_data.time.split(':')
+        
+        # --- Handle optional birth time ---
+        # If no time is provided, default to noon for the external API call.
+        # This provides the best average for daily planetary positions.
+        time_for_api = request_data.time if request_data.time is not None else "12:00:00"
+        time_parts = time_for_api.split(':')
+        # --- END OF CHANGE ---
 
         api_payload = {
             "subject": {
@@ -48,7 +55,7 @@ class AstrologerAPIClient:
                 "month": int(date_parts[1]),
                 "day": int(date_parts[2]),
                 "hour": int(time_parts[0]),
-                "minute": int(time_parts[1]),
+                "minute": int(time_parts[1]), 
                 "latitude": request_data.latitude,
                 "longitude": request_data.longitude,
                 "timezone": request_data.timezone
@@ -60,7 +67,7 @@ class AstrologerAPIClient:
         async with httpx.AsyncClient() as client:
             try:
                 print(f"[{self.__class__.__name__}] Sending payload to external API: {json.dumps(api_payload, indent=2)}")
-                print(f"[{self.__class__.__name__}] Full URL being requested: {self.base_url + natal_chart_endpoint}") # ADD THIS LINE
+                print(f"[{self.__class__.__name__}] Full URL being requested: {self.base_url + natal_chart_endpoint}")
                 response = await client.post(
                     self.base_url + natal_chart_endpoint,
                     json=api_payload,
@@ -95,36 +102,34 @@ class AstrologerAPIClient:
         """
         Maps the external API response to our internal schema.
         """
-        # Extract the main 'data' block from the API response
         subject_and_points_data = data.get('data', {})
 
-        # Subject mapping - Ensure it pulls from the API's 'data' section
+        # The 'time' field in our Subject schema is now optional.
+        # This mapping correctly passes the original request's time (which could be None)
+        # into the final CalculatedChart object.
         mapped_subject = Subject(
-            name=subject_and_points_data.get('name', req.name),
-            city=subject_and_points_data.get('city', req.city),
-            date=req.date, # Keeping original request date/time, as API provides ISO formatted string
+            # 'name' and 'city' from the API response are often blank, so we fall back to the request data.
+            # name=subject_and_points_data.get('name', req.name), 
+            # city=subject_and_points_data.get('city', req.city),
+            date=req.date,
             time=req.time,
-            latitude=subject_and_points_data.get('lat', req.latitude), # API uses 'lat'
-            longitude=subject_and_points_data.get('lng', req.longitude), # API uses 'lng'
-            timezone=subject_and_points_data.get('tz_str', req.timezone) # API uses 'tz_str'
+            latitude=subject_and_points_data.get('lat', req.latitude),
+            longitude=subject_and_points_data.get('lng', req.longitude),
+            timezone=subject_and_points_data.get('tz_str', req.timezone)
         )
 
         celestial_points = []
-        # The API response lists planet/axial cusp names in 'planets_names_list' and 'axial_cusps_names_list'
-        # Then, each planet/cusp's data is a direct key in the 'data' object.
         all_point_keys = subject_and_points_data.get('planets_names_list', []) + \
                          subject_and_points_data.get('axial_cusps_names_list', [])
 
         for point_key_raw in all_point_keys:
-            # The API uses lower_case for keys, but sometimes Title_Case for values
-            point_key = point_key_raw.lower() # Ensure key lookup is lowercase
+            point_key = point_key_raw.lower()
             point_data = subject_and_points_data.get(point_key, {})
 
             if not point_data:
                 print(f"Warning: No data found for point '{point_key}'")
-                continue # Skip if data for this point is missing
+                continue
 
-            # Clean name from API (e.g., "Mean_Node" -> "Mean Node")
             clean_name = point_data.get('name', point_key_raw).replace("_", " ").title()
 
             try:
@@ -139,10 +144,9 @@ class AstrologerAPIClient:
                         id=point_data['sign'].lower(),
                         name=point_data['sign']
                     ),
-                    # The 'house' field from API is a string like "Eleventh_House"
                     house=House(
                         id=point_data['house'].lower(),
-                        name=point_data['house'].replace("_", " ") # e.g., "Eleventh House"
+                        name=point_data['house'].replace("_", " ")
                     )
                 ))
             except KeyError as e:
@@ -159,16 +163,14 @@ class AstrologerAPIClient:
         }
 
         for house_key_raw in subject_and_points_data.get('houses_names_list', []):
-            # Convert the key from 'First_House' (from list) to 'first_house' (actual dict key)
-            normalized_house_key = house_key_raw.lower() # <--- NEW LINE
-            house_data = subject_and_points_data.get(normalized_house_key, {}) # <--- CHANGED HERE
+            normalized_house_key = house_key_raw.lower()
+            house_data = subject_and_points_data.get(normalized_house_key, {})
             
             if not house_data:
-                # This warning should now disappear!
                 print(f"Warning: No data found for house '{house_key_raw}' (after normalization: '{normalized_house_key}')")
                 continue
 
-            house_num = house_name_map.get(normalized_house_key, 0) # Use normalized key here too
+            house_num = house_name_map.get(normalized_house_key, 0)
 
             suffix = "th"
             if 10 <= house_num % 100 <= 20:
@@ -178,7 +180,7 @@ class AstrologerAPIClient:
 
             try:
                 house_cusps.append(HouseCusp(
-                    id=normalized_house_key, # Use the normalized key for ID
+                    id=normalized_house_key,
                     name=f"{house_num}{suffix} House",
                     position_longitude=house_data['position'],
                     absolute_longitude=house_data['abs_pos'],
@@ -190,7 +192,6 @@ class AstrologerAPIClient:
                 print(f"Unexpected error mapping HouseCusp for '{house_key_raw}': {e}. Data: {house_data}")
 
         aspects = []
-        # Aspects are directly under the root of the API response, not under 'data'
         for aspect_data in data.get('aspects', []):
             try:
                 aspects.append(Aspect(

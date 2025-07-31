@@ -11,6 +11,52 @@ from .astrologer_api import AstrologerAPIClient, UpstreamServiceError
 
 load_dotenv()
 
+"""
+Removes all time-dependent data from a CalculatedChart object.
+This function modifies the chart in-place to:
+1.  Remove the entire `houses` list (house cusps).
+2.  Filter out the four angles (Ascendant, Descendant, MC, IC) from the celestial points list.
+3.  Remove the `house` placement data from all remaining celestial points.
+4.  Filter out any aspects that involve one of the removed angles.
+5.  Add a `chart_type` flag to indicate the data has been modified.
+
+Args:
+    chart: The CalculatedChart object to be pruned.
+
+Returns:
+    The modified CalculatedChart object.
+"""
+def _prune_chart_for_no_time(chart: CalculatedChart) -> CalculatedChart:
+    print("-> Pruning chart for 'no time' scenario.")
+
+    # Define the IDs of the angles to be removed
+    ANGLE_IDS: Set[str] = {"ascendant", "descendant", "medium_coeli", "imum_coeli"}
+
+    # 1. Remove house cusps by setting the field to None
+    chart.houses = None
+
+    # 2. Filter out angles from the list of celestial points
+    chart.celestial_points = [
+        point for point in chart.celestial_points if point.id not in ANGLE_IDS
+    ]
+
+    # 3. Remove house placement from all remaining celestial points
+    for point in chart.celestial_points:
+        point.house = None
+
+    # 4. Filter out any aspects that involve one of the angles
+    if chart.aspects:
+        chart.aspects = [
+            aspect for aspect in chart.aspects 
+            if aspect.point_1_id not in ANGLE_IDS and aspect.point_2_id not in ANGLE_IDS
+        ]
+
+    # 5. Add the 'no_time' flag to mark this chart as time-agnostic
+    chart.chart_type = "no_time"
+
+    print("-> Pruning complete.")
+    return chart
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Calculation Service starting up...")
@@ -51,23 +97,29 @@ async def generic_exception_handler(request: Request, exc: Exception):
 
 @app.post("/chart", response_model=CalculatedChart, tags=["Calculation"])
 async def create_chart(chart_request: ChartRequest, request: Request):
+    """
+    Creates a natal chart. If no birth time is provided, the service returns
+    a chart with all time-dependent data (houses, angles) removed.
+    """
     api_client: AstrologerAPIClient = request.app.state.api_client
-    
-    print(f"Calling get_natal_chart with: {chart_request.dict()}") # Debugging input
-    
-    calculated_chart = None # Initialize to None for safety in case of exception before assignment
+
+    is_no_time_request = chart_request.time is None
+    if is_no_time_request:
+        print("Received a 'no birth time' request. A default time of noon will be used for the external API call.")
+
+    # The API client will handle using a default time if chart_request.time is None.
     try:
         calculated_chart = await api_client.get_natal_chart(chart_request)
-        print(f"Result from get_natal_chart: {calculated_chart}") # THIS IS KEY
     except Exception as e:
         print(f"Error calling get_natal_chart: {e}")
-        # Depending on your desired error handling, you might re-raise,
-        # return an error response, etc. For now, let's just observe.
+        raise HTTPException(status_code=500, detail=f"Failed to get chart from upstream API: {str(e)}")
 
-    # After the print, if `calculated_chart` is None, this is your problem source.
+    if is_no_time_request and calculated_chart:
+        calculated_chart = _prune_chart_for_no_time(calculated_chart)
+
+
     if calculated_chart is None:
-        print("calculated_chart is None! This is why the ResponseValidationError occurs.")
-        # You would typically return an HTTPException here for a real API
+        print("calculated_chart is None! This is why a validation error might occur.")
         raise HTTPException(status_code=500, detail="Calculation service returned no data.")
 
     return calculated_chart

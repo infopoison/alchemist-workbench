@@ -1,250 +1,26 @@
 {
-  "chart_id": "a03c9c03-8531-4b0b-87f5-83b08be5ea1e",
+  "chart_id": "0ce31410-f2ed-4ed9-b5f9-b7e48e703418",
   "engine_metadata": {
     "calculation_engine": "AstrologerAPI_v4_RapidAPI"
   },
   "subject": {
     "date": "1995-05-18",
-    "time": "00:00:00",
-    "latitude": -33.447,
-    "longitude": -70.673,
-    "timezone": "America/Santiago"
+    "time": "17:41:00",
+    "latitude": 32.779,
+    "longitude": -96.808,
+    "timezone": "America/Chicago"
   },
   "celestial_points": [
     {
       "id": "sun",
       "name": "Sun",
-      "position_longitude": 26.768741376741488,
-      "absolute_longitude": 56.76874137674149,
+      "position_longitude": 27.518358055639126,
+      "absolute_longitude": 57.518358055639126,
       "speed": 0.0,
       "is_retrograde": false,
       "zodiac_sign": {
         "id": "tau",
         "name": "Tau"
-      },
-      "house": {
-        "id": "fourth_house",
-        "name": "Fourth House"
-      }
-    },
-    {
-      "id": "moon",
-      "name": "Moon",
-      "position_longitude": 13.26268736017147,
-      "absolute_longitude": 283.26268736017147,
-      "speed": 0.0,
-      "is_retrograde": false,
-      "zodiac_sign": {
-        "id": "cap",
-        "name": "Cap"
-      },
-      "house": {
-        "id": "eleventh_house",
-        "name": "Eleventh House"
-      }
-    },
-    {
-      "id": "mercury",
-      "name": "Mercury",
-      "position_longitude": 16.823808428671043,
-      "absolute_longitude": 76.82380842867104,
-      "speed": 0.0,
-      "is_retrograde": false,
-      "zodiac_sign": {
-        "id": "gem",
-        "name": "Gem"
-      },
-      "house": {
-        "id": "fourth_house",
-        "name": "Fourth House"
-      }
-    },
-    {
-      "id": "venus",
-      "name": "Venus",
-      "position_longitude": 1.446142545861644,
-      "absolute_longitude": 31.446142545861644,
-      "speed": 0.0,
-      "is_retrograde": false,
-      "zodiac_sign": {
-        "id": "tau",
-        "name": "Tau"
-      },
-      "house": {
-        "id": "third_house",
-        "name": "Third House"
-      }
-    },
-    {
-      "id": "mars",
-      "name": "Mars",
-      "position_longitude": 26.72262296760499,
-      "absolute_longitude": 146.722622967605,
-      "speed": 0.0,
-      "is_retrograde": false,
-      "zodiac_sign": {
-        "id": "leo",
-        "name": "Leo"
-      },
-      "house": {
-        "id": "seventh_house",
-        "name": "Seventh House"
-      }
-    },
-    {
-      "id": "jupiter",
-      "name": "Jupiter",
-      "position_longitude": 12.292841963139523,
-      "absolute_longitude": 252.29284196313952,
-      "speed": 0.0,
-      "is_retrograde": true,
-      "zodiac_sign": {
-        "id": "sag",
-        "name": "Sag"
-      },
-      "house": {
-        "id": "tenth_house",
-        "name": "Tenth House"
-      }
-    },
-    {
-      "id": "saturn",
-      "name": "Saturn",
-      "position_longitude": 22.813952381344166,
-      "absolute_longitude": 352.81395238134417,
-      "speed": 0.0,
-      "is_retrograde": false,
-      "zodiac_sign": {
-        "id": "pis",
-        "name": "Pis"
-      },
-      "house": {
-        "id": "second_house",
-        "name": "Second House"
-      }
-    },
-    {
-      "id": "uranus",
-      "name": "Uranus",
-      "position_longitude": 0.40665305365342874,
-      "absolute_longitude": 300.40665305365343,
-      "speed": 0.0,
-      "is_retrograde": true,
-      "zodiac_sign": {
-        "id": "aqu",
-        "name": "Aqu"
-      },
-      "house": {
-        "id": "twelfth_house",
-        "name": "Twelfth House"
-      }
-    },
-    {
-      "id": "neptune",
-      "name": "Neptune",
-      "position_longitude": 25.441510348923316,
-      "absolute_longitude": 295.4415103489233,
-      "speed": 0.0,
-      "is_retrograde": true,
-      "zodiac_sign": {
-        "id": "cap",
-        "name": "Cap"
-      },
-      "house": {
-        "id": "twelfth_house",
-        "name": "Twelfth House"
-      }
-    },
-    {
-      "id": "pluto",
-      "name": "Pluto",
-      "position_longitude": 29.298566240306485,
-      "absolute_longitude": 239.29856624030649,
-      "speed": 0.0,
-      "is_retrograde": true,
-      "zodiac_sign": {
-        "id": "sco",
-        "name": "Sco"
-      },
-      "house": {
-        "id": "tenth_house",
-        "name": "Tenth House"
-      }
-    },
-    {
-      "id": "mean_node",
-      "name": "Mean Node",
-      "position_longitude": 4.503579847316757,
-      "absolute_longitude": 214.50357984731676,
-      "speed": 0.0,
-      "is_retrograde": true,
-      "zodiac_sign": {
-        "id": "sco",
-        "name": "Sco"
-      },
-      "house": {
-        "id": "ninth_house",
-        "name": "Ninth House"
-      }
-    },
-    {
-      "id": "true_node",
-      "name": "True Node",
-      "position_longitude": 5.466744524820939,
-      "absolute_longitude": 215.46674452482094,
-      "speed": 0.0,
-      "is_retrograde": true,
-      "zodiac_sign": {
-        "id": "sco",
-        "name": "Sco"
-      },
-      "house": {
-        "id": "ninth_house",
-        "name": "Ninth House"
-      }
-    },
-    {
-      "id": "mean_south_node",
-      "name": "Mean South Node",
-      "position_longitude": 4.503579847316757,
-      "absolute_longitude": 34.50357984731676,
-      "speed": 0.0,
-      "is_retrograde": true,
-      "zodiac_sign": {
-        "id": "tau",
-        "name": "Tau"
-      },
-      "house": {
-        "id": "third_house",
-        "name": "Third House"
-      }
-    },
-    {
-      "id": "true_south_node",
-      "name": "True South Node",
-      "position_longitude": 5.4667445248209106,
-      "absolute_longitude": 35.46674452482091,
-      "speed": 0.0,
-      "is_retrograde": true,
-      "zodiac_sign": {
-        "id": "tau",
-        "name": "Tau"
-      },
-      "house": {
-        "id": "third_house",
-        "name": "Third House"
-      }
-    },
-    {
-      "id": "chiron",
-      "name": "Chiron",
-      "position_longitude": 19.988766966737074,
-      "absolute_longitude": 169.98876696673707,
-      "speed": 0.0,
-      "is_retrograde": true,
-      "zodiac_sign": {
-        "id": "vir",
-        "name": "Vir"
       },
       "house": {
         "id": "eighth_house",
@@ -252,10 +28,26 @@
       }
     },
     {
-      "id": "mean_lilith",
-      "name": "Mean Lilith",
-      "position_longitude": 15.043802975857801,
-      "absolute_longitude": 75.0438029758578,
+      "id": "moon",
+      "name": "Moon",
+      "position_longitude": 24.62606602310376,
+      "absolute_longitude": 294.62606602310376,
+      "speed": 0.0,
+      "is_retrograde": false,
+      "zodiac_sign": {
+        "id": "cap",
+        "name": "Cap"
+      },
+      "house": {
+        "id": "third_house",
+        "name": "Third House"
+      }
+    },
+    {
+      "id": "mercury",
+      "name": "Mercury",
+      "position_longitude": 17.187073658056633,
+      "absolute_longitude": 77.18707365805663,
       "speed": 0.0,
       "is_retrograde": false,
       "zodiac_sign": {
@@ -263,20 +55,228 @@
         "name": "Gem"
       },
       "house": {
+        "id": "eighth_house",
+        "name": "Eighth House"
+      }
+    },
+    {
+      "id": "venus",
+      "name": "Venus",
+      "position_longitude": 2.38984000080211,
+      "absolute_longitude": 32.38984000080211,
+      "speed": 0.0,
+      "is_retrograde": false,
+      "zodiac_sign": {
+        "id": "tau",
+        "name": "Tau"
+      },
+      "house": {
+        "id": "seventh_house",
+        "name": "Seventh House"
+      }
+    },
+    {
+      "id": "mars",
+      "name": "Mars",
+      "position_longitude": 27.052109481602827,
+      "absolute_longitude": 147.05210948160283,
+      "speed": 0.0,
+      "is_retrograde": false,
+      "zodiac_sign": {
+        "id": "leo",
+        "name": "Leo"
+      },
+      "house": {
+        "id": "tenth_house",
+        "name": "Tenth House"
+      }
+    },
+    {
+      "id": "jupiter",
+      "name": "Jupiter",
+      "position_longitude": 12.200685209299849,
+      "absolute_longitude": 252.20068520929985,
+      "speed": 0.0,
+      "is_retrograde": true,
+      "zodiac_sign": {
+        "id": "sag",
+        "name": "Sag"
+      },
+      "house": {
+        "id": "second_house",
+        "name": "Second House"
+      }
+    },
+    {
+      "id": "saturn",
+      "name": "Saturn",
+      "position_longitude": 22.87215990559355,
+      "absolute_longitude": 352.87215990559355,
+      "speed": 0.0,
+      "is_retrograde": false,
+      "zodiac_sign": {
+        "id": "pis",
+        "name": "Pis"
+      },
+      "house": {
+        "id": "fifth_house",
+        "name": "Fifth House"
+      }
+    },
+    {
+      "id": "uranus",
+      "name": "Uranus",
+      "position_longitude": 0.3983187359914382,
+      "absolute_longitude": 300.39831873599144,
+      "speed": 0.0,
+      "is_retrograde": true,
+      "zodiac_sign": {
+        "id": "aqu",
+        "name": "Aqu"
+      },
+      "house": {
         "id": "fourth_house",
         "name": "Fourth House"
       }
     },
     {
-      "id": "ascendant",
-      "name": "Ascendant",
-      "position_longitude": 21.950920139998914,
-      "absolute_longitude": 321.9509201399989,
+      "id": "neptune",
+      "name": "Neptune",
+      "position_longitude": 25.43315857382612,
+      "absolute_longitude": 295.4331585738261,
+      "speed": 0.0,
+      "is_retrograde": true,
+      "zodiac_sign": {
+        "id": "cap",
+        "name": "Cap"
+      },
+      "house": {
+        "id": "third_house",
+        "name": "Third House"
+      }
+    },
+    {
+      "id": "pluto",
+      "name": "Pluto",
+      "position_longitude": 29.277081060487433,
+      "absolute_longitude": 239.27708106048743,
+      "speed": 0.0,
+      "is_retrograde": true,
+      "zodiac_sign": {
+        "id": "sco",
+        "name": "Sco"
+      },
+      "house": {
+        "id": "second_house",
+        "name": "Second House"
+      }
+    },
+    {
+      "id": "mean_node",
+      "name": "Mean Node",
+      "position_longitude": 4.462376513758443,
+      "absolute_longitude": 214.46237651375844,
+      "speed": 0.0,
+      "is_retrograde": true,
+      "zodiac_sign": {
+        "id": "sco",
+        "name": "Sco"
+      },
+      "house": {
+        "id": "first_house",
+        "name": "First House"
+      }
+    },
+    {
+      "id": "true_node",
+      "name": "True Node",
+      "position_longitude": 5.437069900663744,
+      "absolute_longitude": 215.43706990066374,
+      "speed": 0.0,
+      "is_retrograde": true,
+      "zodiac_sign": {
+        "id": "sco",
+        "name": "Sco"
+      },
+      "house": {
+        "id": "first_house",
+        "name": "First House"
+      }
+    },
+    {
+      "id": "mean_south_node",
+      "name": "Mean South Node",
+      "position_longitude": 4.462376513758443,
+      "absolute_longitude": 34.46237651375844,
+      "speed": 0.0,
+      "is_retrograde": true,
+      "zodiac_sign": {
+        "id": "tau",
+        "name": "Tau"
+      },
+      "house": {
+        "id": "seventh_house",
+        "name": "Seventh House"
+      }
+    },
+    {
+      "id": "true_south_node",
+      "name": "True South Node",
+      "position_longitude": 5.437069900663744,
+      "absolute_longitude": 35.437069900663744,
+      "speed": 0.0,
+      "is_retrograde": true,
+      "zodiac_sign": {
+        "id": "tau",
+        "name": "Tau"
+      },
+      "house": {
+        "id": "seventh_house",
+        "name": "Seventh House"
+      }
+    },
+    {
+      "id": "chiron",
+      "name": "Chiron",
+      "position_longitude": 19.988753865133532,
+      "absolute_longitude": 169.98875386513353,
       "speed": 0.0,
       "is_retrograde": false,
       "zodiac_sign": {
-        "id": "aqu",
-        "name": "Aqu"
+        "id": "vir",
+        "name": "Vir"
+      },
+      "house": {
+        "id": "eleventh_house",
+        "name": "Eleventh House"
+      }
+    },
+    {
+      "id": "mean_lilith",
+      "name": "Mean Lilith",
+      "position_longitude": 15.130469332333803,
+      "absolute_longitude": 75.1304693323338,
+      "speed": 0.0,
+      "is_retrograde": false,
+      "zodiac_sign": {
+        "id": "gem",
+        "name": "Gem"
+      },
+      "house": {
+        "id": "eighth_house",
+        "name": "Eighth House"
+      }
+    },
+    {
+      "id": "ascendant",
+      "name": "Ascendant",
+      "position_longitude": 25.099520479555082,
+      "absolute_longitude": 205.09952047955508,
+      "speed": 0.0,
+      "is_retrograde": false,
+      "zodiac_sign": {
+        "id": "lib",
+        "name": "Lib"
       },
       "house": {
         "id": "first_house",
@@ -286,13 +286,13 @@
     {
       "id": "descendant",
       "name": "Descendant",
-      "position_longitude": 21.950920139998914,
-      "absolute_longitude": 141.9509201399989,
+      "position_longitude": 25.099520479555053,
+      "absolute_longitude": 25.099520479555053,
       "speed": 0.0,
       "is_retrograde": false,
       "zodiac_sign": {
-        "id": "leo",
-        "name": "Leo"
+        "id": "ari",
+        "name": "Ari"
       },
       "house": {
         "id": "seventh_house",
@@ -302,13 +302,13 @@
     {
       "id": "medium_coeli",
       "name": "Medium Coeli",
-      "position_longitude": 17.16775956141109,
-      "absolute_longitude": 227.1677595614111,
+      "position_longitude": 27.51487215056366,
+      "absolute_longitude": 117.51487215056366,
       "speed": 0.0,
       "is_retrograde": false,
       "zodiac_sign": {
-        "id": "sco",
-        "name": "Sco"
+        "id": "can",
+        "name": "Can"
       },
       "house": {
         "id": "tenth_house",
@@ -318,13 +318,13 @@
     {
       "id": "imum_coeli",
       "name": "Imum Coeli",
-      "position_longitude": 17.167759561411117,
-      "absolute_longitude": 47.16775956141112,
+      "position_longitude": 27.514872150563633,
+      "absolute_longitude": 297.51487215056363,
       "speed": 0.0,
       "is_retrograde": false,
       "zodiac_sign": {
-        "id": "tau",
-        "name": "Tau"
+        "id": "cap",
+        "name": "Cap"
       },
       "house": {
         "id": "fourth_house",
@@ -336,327 +336,377 @@
     {
       "id": "first_house",
       "name": "1st House",
-      "position_longitude": 21.950920139998914,
-      "absolute_longitude": 321.9509201399989,
-      "zodiac_sign": {
-        "id": "aqu",
-        "name": "Aqu"
-      }
-    },
-    {
-      "id": "second_house",
-      "name": "2nd House",
-      "position_longitude": 16.0263217697065,
-      "absolute_longitude": 346.0263217697065,
-      "zodiac_sign": {
-        "id": "pis",
-        "name": "Pis"
-      }
-    },
-    {
-      "id": "third_house",
-      "name": "3rd House",
-      "position_longitude": 14.589934453660858,
-      "absolute_longitude": 14.589934453660858,
-      "zodiac_sign": {
-        "id": "ari",
-        "name": "Ari"
-      }
-    },
-    {
-      "id": "fourth_house",
-      "name": "4th House",
-      "position_longitude": 17.167759561411117,
-      "absolute_longitude": 47.16775956141112,
-      "zodiac_sign": {
-        "id": "tau",
-        "name": "Tau"
-      }
-    },
-    {
-      "id": "fifth_house",
-      "name": "5th House",
-      "position_longitude": 20.96334961321918,
-      "absolute_longitude": 80.96334961321918,
-      "zodiac_sign": {
-        "id": "gem",
-        "name": "Gem"
-      }
-    },
-    {
-      "id": "sixth_house",
-      "name": "6th House",
-      "position_longitude": 22.92868147343438,
-      "absolute_longitude": 112.92868147343438,
-      "zodiac_sign": {
-        "id": "can",
-        "name": "Can"
-      }
-    },
-    {
-      "id": "seventh_house",
-      "name": "7th House",
-      "position_longitude": 21.950920139998914,
-      "absolute_longitude": 141.9509201399989,
-      "zodiac_sign": {
-        "id": "leo",
-        "name": "Leo"
-      }
-    },
-    {
-      "id": "eighth_house",
-      "name": "8th House",
-      "position_longitude": 16.026321769706556,
-      "absolute_longitude": 166.02632176970656,
-      "zodiac_sign": {
-        "id": "vir",
-        "name": "Vir"
-      }
-    },
-    {
-      "id": "ninth_house",
-      "name": "9th House",
-      "position_longitude": 14.589934453660845,
-      "absolute_longitude": 194.58993445366085,
+      "position_longitude": 25.099520479555082,
+      "absolute_longitude": 205.09952047955508,
       "zodiac_sign": {
         "id": "lib",
         "name": "Lib"
       }
     },
     {
-      "id": "tenth_house",
-      "name": "10th House",
-      "position_longitude": 17.16775956141109,
-      "absolute_longitude": 227.1677595614111,
+      "id": "second_house",
+      "name": "2nd House",
+      "position_longitude": 23.591514385639385,
+      "absolute_longitude": 233.59151438563939,
       "zodiac_sign": {
         "id": "sco",
         "name": "Sco"
       }
     },
     {
-      "id": "eleventh_house",
-      "name": "11th House",
-      "position_longitude": 20.96334961321918,
-      "absolute_longitude": 260.9633496132192,
+      "id": "third_house",
+      "name": "3rd House",
+      "position_longitude": 24.68508556509738,
+      "absolute_longitude": 264.6850855650974,
       "zodiac_sign": {
         "id": "sag",
         "name": "Sag"
       }
     },
     {
-      "id": "twelfth_house",
-      "name": "12th House",
-      "position_longitude": 22.92868147343438,
-      "absolute_longitude": 292.9286814734344,
+      "id": "fourth_house",
+      "name": "4th House",
+      "position_longitude": 27.514872150563633,
+      "absolute_longitude": 297.51487215056363,
       "zodiac_sign": {
         "id": "cap",
         "name": "Cap"
+      }
+    },
+    {
+      "id": "fifth_house",
+      "name": "5th House",
+      "position_longitude": 29.998997406834064,
+      "absolute_longitude": 329.99899740683406,
+      "zodiac_sign": {
+        "id": "aqu",
+        "name": "Aqu"
+      }
+    },
+    {
+      "id": "sixth_house",
+      "name": "6th House",
+      "position_longitude": 29.618911708394876,
+      "absolute_longitude": 359.6189117083949,
+      "zodiac_sign": {
+        "id": "pis",
+        "name": "Pis"
+      }
+    },
+    {
+      "id": "seventh_house",
+      "name": "7th House",
+      "position_longitude": 25.099520479555053,
+      "absolute_longitude": 25.099520479555053,
+      "zodiac_sign": {
+        "id": "ari",
+        "name": "Ari"
+      }
+    },
+    {
+      "id": "eighth_house",
+      "name": "8th House",
+      "position_longitude": 23.591514385639357,
+      "absolute_longitude": 53.59151438563936,
+      "zodiac_sign": {
+        "id": "tau",
+        "name": "Tau"
+      }
+    },
+    {
+      "id": "ninth_house",
+      "name": "9th House",
+      "position_longitude": 24.68508556509738,
+      "absolute_longitude": 84.68508556509738,
+      "zodiac_sign": {
+        "id": "gem",
+        "name": "Gem"
+      }
+    },
+    {
+      "id": "tenth_house",
+      "name": "10th House",
+      "position_longitude": 27.51487215056366,
+      "absolute_longitude": 117.51487215056366,
+      "zodiac_sign": {
+        "id": "can",
+        "name": "Can"
+      }
+    },
+    {
+      "id": "eleventh_house",
+      "name": "11th House",
+      "position_longitude": 29.998997406834064,
+      "absolute_longitude": 149.99899740683406,
+      "zodiac_sign": {
+        "id": "leo",
+        "name": "Leo"
+      }
+    },
+    {
+      "id": "twelfth_house",
+      "name": "12th House",
+      "position_longitude": 29.618911708394847,
+      "absolute_longitude": 179.61891170839485,
+      "zodiac_sign": {
+        "id": "vir",
+        "name": "Vir"
       }
     }
   ],
   "aspects": [
     {
       "point_1_id": "sun",
+      "point_2_id": "moon",
+      "aspect_id": "trine",
+      "aspect_name": "trine",
+      "orb": 2.8922920325353516
+    },
+    {
+      "point_1_id": "sun",
       "point_2_id": "mars",
       "aspect_id": "square",
       "aspect_name": "square",
-      "orb": -0.04611840913651122
+      "orb": -0.4662485740362854
     },
     {
       "point_1_id": "sun",
       "point_2_id": "saturn",
       "aspect_id": "sextile",
       "aspect_name": "sextile",
-      "orb": 3.9547889953973367
+      "orb": 4.646198150045564
     },
     {
       "point_1_id": "sun",
       "point_2_id": "uranus",
       "aspect_id": "trine",
       "aspect_name": "trine",
-      "orb": -3.6379116769119264
+      "orb": -2.879960680352326
     },
     {
       "point_1_id": "sun",
       "point_2_id": "neptune",
       "aspect_id": "trine",
       "aspect_name": "trine",
-      "orb": 1.3272310278181862
+      "orb": 2.0851994818129924
     },
     {
       "point_1_id": "sun",
       "point_2_id": "pluto",
       "aspect_id": "opposition",
       "aspect_name": "opposition",
-      "orb": -2.529824863565011
+      "orb": -1.7587230048483207
     },
     {
       "point_1_id": "sun",
       "point_2_id": "chiron",
       "aspect_id": "trine",
       "aspect_name": "trine",
-      "orb": -6.7799744100043995
+      "orb": -7.529604190505609
+    },
+    {
+      "point_1_id": "sun",
+      "point_2_id": "medium_coeli",
+      "aspect_id": "sextile",
+      "aspect_name": "sextile",
+      "orb": -0.0034859050754789678
+    },
+    {
+      "point_1_id": "moon",
+      "point_2_id": "saturn",
+      "aspect_id": "sextile",
+      "aspect_name": "sextile",
+      "orb": -1.753906117510212
+    },
+    {
+      "point_1_id": "moon",
+      "point_2_id": "uranus",
+      "aspect_id": "conjunction",
+      "aspect_name": "conjunction",
+      "orb": 5.772252712887678
+    },
+    {
+      "point_1_id": "moon",
+      "point_2_id": "neptune",
+      "aspect_id": "conjunction",
+      "aspect_name": "conjunction",
+      "orb": 0.8070925507223592
+    },
+    {
+      "point_1_id": "moon",
+      "point_2_id": "pluto",
+      "aspect_id": "sextile",
+      "aspect_name": "sextile",
+      "orb": -4.651015037383672
     },
     {
       "point_1_id": "moon",
       "point_2_id": "chiron",
       "aspect_id": "trine",
       "aspect_name": "trine",
-      "orb": -6.726079606565605
+      "orb": 4.6373121579702286
     },
     {
-      "id": "mercury",
+      "point_1_id": "moon",
+      "point_2_id": "ascendant",
+      "aspect_id": "square",
+      "aspect_name": "square",
+      "orb": -0.47345445645132145
+    },
+    {
+      "point_1_id": "mercury",
       "point_2_id": "jupiter",
       "aspect_id": "opposition",
       "aspect_name": "opposition",
-      "orb": -4.53096646553152
+      "orb": -4.98638844875677
     },
     {
       "point_1_id": "mercury",
       "point_2_id": "chiron",
       "aspect_id": "square",
       "aspect_name": "square",
-      "orb": 3.164958538066003
+      "orb": 2.801680207076913
     },
     {
       "point_1_id": "mercury",
       "point_2_id": "mean_lilith",
       "aspect_id": "conjunction",
       "aspect_name": "conjunction",
-      "orb": 1.780005452813242
+      "orb": 2.05660432572283
     },
     {
       "point_1_id": "venus",
       "point_2_id": "mars",
       "aspect_id": "trine",
       "aspect_name": "trine",
-      "orb": -4.723519578256656
+      "orb": -5.337730519199283
     },
     {
       "point_1_id": "venus",
       "point_2_id": "uranus",
       "aspect_id": "square",
       "aspect_name": "square",
-      "orb": 1.0394894922081903
+      "orb": 1.9915212648106717
     },
     {
       "point_1_id": "venus",
       "point_2_id": "mean_node",
       "aspect_id": "opposition",
       "aspect_name": "opposition",
-      "orb": -3.05743730145511
+      "orb": -2.072536512956333
     },
     {
       "point_1_id": "venus",
       "point_2_id": "mean_south_node",
       "aspect_id": "conjunction",
       "aspect_name": "conjunction",
-      "orb": 3.0574373014551384
+      "orb": 2.072536512956333
     },
     {
       "point_1_id": "mars",
       "point_2_id": "pluto",
       "aspect_id": "square",
       "aspect_name": "square",
-      "orb": 2.5759432727014655
+      "orb": 2.224971578884606
     },
     {
       "point_1_id": "mars",
       "point_2_id": "mean_lilith",
       "aspect_id": "quintile",
       "aspect_name": "quintile",
-      "orb": -0.32118000825281
+      "orb": -0.07835985073097618
     },
     {
       "point_1_id": "mars",
       "point_2_id": "mean_south_node",
       "aspect_id": "trine",
       "aspect_name": "trine",
-      "orb": -7.780956879711766
+      "orb": -7.410267032155616
     },
     {
       "point_1_id": "jupiter",
       "point_2_id": "mean_lilith",
       "aspect_id": "opposition",
       "aspect_name": "opposition",
-      "orb": -2.750961012718278
+      "orb": -2.9297841230339543
     },
     {
       "point_1_id": "saturn",
       "point_2_id": "neptune",
       "aspect_id": "sextile",
       "aspect_name": "sextile",
-      "orb": -2.6275579675791505
+      "orb": -2.560998668232571
     },
     {
       "point_1_id": "saturn",
       "point_2_id": "pluto",
       "aspect_id": "trine",
       "aspect_name": "trine",
-      "orb": -6.4846138589623195
+      "orb": -6.404921154893884
     },
     {
       "point_1_id": "saturn",
       "point_2_id": "chiron",
       "aspect_id": "opposition",
       "aspect_name": "opposition",
-      "orb": -2.825185414607091
+      "orb": -2.8834060404600166
     },
     {
       "point_1_id": "uranus",
       "point_2_id": "neptune",
       "aspect_id": "conjunction",
       "aspect_name": "conjunction",
-      "orb": 4.965142704730113
+      "orb": 4.9651601621653185
     },
     {
       "point_1_id": "uranus",
       "point_2_id": "pluto",
       "aspect_id": "sextile",
       "aspect_name": "sextile",
-      "orb": 1.1080868133469437
+      "orb": 1.1212376755040054
     },
     {
       "point_1_id": "uranus",
       "point_2_id": "mean_node",
       "aspect_id": "square",
       "aspect_name": "square",
-      "orb": -4.096926793663329
+      "orb": -4.064057777767005
     },
     {
       "point_1_id": "uranus",
       "point_2_id": "mean_south_node",
       "aspect_id": "square",
       "aspect_name": "square",
-      "orb": 4.096926793663329
+      "orb": 4.064057777767005
     },
     {
       "point_1_id": "neptune",
       "point_2_id": "pluto",
       "aspect_id": "sextile",
       "aspect_name": "sextile",
-      "orb": -3.857055891383169
+      "orb": -3.843922486661313
     },
     {
       "point_1_id": "neptune",
       "point_2_id": "chiron",
       "aspect_id": "trine",
       "aspect_name": "trine",
-      "orb": 5.452743382186242
+      "orb": 5.444404708692588
+    },
+    {
+      "point_1_id": "neptune",
+      "point_2_id": "ascendant",
+      "aspect_id": "square",
+      "aspect_name": "square",
+      "orb": 0.33363809427103774
     },
     {
       "point_1_id": "chiron",
       "point_2_id": "mean_lilith",
       "aspect_id": "square",
       "aspect_name": "square",
-      "orb": 4.944963990879273
-    },
-    {
-      "point_1_id": "ascendant",
-      "point_2_id": "mean_south_node",
-      "aspect_id": "quintile",
-      "aspect_name": "quintile",
-      "orb": 0.5526597073178436
+      "orb": 4.858284532799729
     }
-  ]
+  ],
+  "chart_type": null
 }

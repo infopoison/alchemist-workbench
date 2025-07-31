@@ -18,8 +18,7 @@ from .schemas import (
     DeconstructRequest, DeconstructResponse,
     ValenceRequest, ValenceResponse,
     ManifestationRequest, ManifestationResponse,
-    EngineMetadata,
-    # ADDED THESE IMPORTS:
+    EngineMetadata, CalculatedChart,
     BirthDataInput, ComponentInput
 )
 from .placement_extractor import extract_all_placement_objects
@@ -289,42 +288,41 @@ async def get_manifestations(request_data: ManifestationRequest, request: Reques
 
 
 @app.post("/life-areas/find-relevant-placements")
-async def find_relevant_placements(life_area: str, request: Request) -> Dict[str, Any]:
+async def find_relevant_placements(life_area: str, chart_data: CalculatedChart, request: Request) -> Dict[str, Any]:
     """
-    Identifies relevant placements using your existing clients and workflow.
+    Identifies relevant placements for a given life area from a pre-calculated chart object.
+    
+    This endpoint now expects a full CalculatedChart JSON object in the request body.
     """
     try:
         # Access your real clients from the application state
-        calc_client = request.app.state.calculation_client
         prompt_assembler = request.app.state.prompt_assembler
         openai_client = request.app.state.openai_client
 
-        birth_data = await request.json()
-        
         # --- Step 1: Get chart data ---
-        full_chart_object = await calc_client.get_natal_chart(birth_data)
-        print('full_chart_object', full_chart_object)
+        # THE INTERNAL CALCULATION CALL IS REMOVED. We use the chart_data object directly.
+        # The 'chart_data' variable is our full_chart_object, validated by Pydantic.
+        print('Received pre-calculated chart object.')
 
         # --- Step 2: Extract all possible placement objects ---
-        all_placement_objects = extract_all_placement_objects(full_chart_object)
-        print(all_placement_objects)
+        # The 'dict()' method is called to pass the model as a dictionary, as the function expects.
+        all_placement_objects = extract_all_placement_objects(chart_data.dict())
         
         # --- Step 3: Create the list of display strings for the prompt ---
         all_display_strings = [p['display'] for p in all_placement_objects]
-        print(all_display_strings)
         
         # --- Step 4: Assemble the prompt using your prompt_assembler ---
         prompt = prompt_assembler.assemble_life_area_filter_prompt(life_area, all_display_strings)
         
         print(f"--- [DEBUG] PROMPT SENT TO OPENAI ---\n{prompt}\n---------------------------------")
 
-        # --- Step 5: Make a direct call to the OpenAI LLM (as you suggested) ---
+        # --- Step 5: Make a direct call to the OpenAI LLM ---
         print("--- Calling OpenAI to find relevant placements... ---")
         llm_response = await asyncio.to_thread(
             openai_client.chat.completions.create,
-            model="gpt-4o-mini", # Use the model you prefer
+            model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
-            response_format={"type": "json_object"} # Force JSON output
+            response_format={"type": "json_object"}
         )
 
         response_content = llm_response.choices[0].message.content
@@ -333,19 +331,14 @@ async def find_relevant_placements(life_area: str, request: Request) -> Dict[str
         
         llm_response_data = json.loads(response_content)
         
-        # --- DYNAMIC KEY PARSING LOGIC ---
+        # --- Dynamic key parsing logic (remains the same) ---
         llm_filtered_strings = []
         if isinstance(llm_response_data, dict) and llm_response_data:
-            # If the response is a dictionary, get the list from the *first value*,
-            # regardless of the key's name.
             first_value = next(iter(llm_response_data.values()), None)
             if isinstance(first_value, list):
                 llm_filtered_strings = first_value
-                
         elif isinstance(llm_response_data, list):
-            # If the LLM returns a raw list, use it directly.
             llm_filtered_strings = llm_response_data
-        # ---------------------------------
 
         # Filter the original objects using the strings we just found
         selected_component_placements = [
@@ -362,5 +355,5 @@ async def find_relevant_placements(life_area: str, request: Request) -> Dict[str
         raise HTTPException(status_code=502, detail=str(e))
     except Exception as e:
         print(f"ERROR in find_relevant_placements: {e}")
+        traceback.print_exc() # Use traceback for better debugging
         raise HTTPException(status_code=500, detail=f"An unexpected internal error occurred: {str(e)}")
-

@@ -490,6 +490,34 @@ VALENCE_PROMPT_ANGLE_IN_SIGN = """
             **[ANGLE_DATA]**
 """
 
+VALENCE_PROMPT_STELLIUM_IN_SIGN = """
+You are an expert archetypal astrologer. Your task is to identify the core archetypal expressions, or "valences," for a stellium in a sign by applying the specific astrological rule known as **The Principle of Focused Intensity**.
+
+**Interpretive Rule to Apply: The Principle of Focused Intensity**
+*   **Core Principle:** A stellium represents a powerful, fused concentration of planetary energies that creates an area of intense focus, specialization, and core life purpose within the sign it occupies.
+*   **Governing System:**
+    *   **Archetypal Fusion:** The planets in a stellium do not act independently. Their drives merge into a single, complex, and potent archetypal force. Your interpretation must capture this combined, emergent energy.
+    *   **Thematic Amplification:** The sign containing the stellium becomes overwhelmingly emphasized. Its qualities dominate the expression of all the involved planets.
+    *   **The "Dominant Chord":** The stellium acts as the dominant, defining chord of the entire chart. Its themes will consistently demand attention and expression.
+
+**Your Task:**
+1.  Analyze the provided list of planets and the sign they all occupy. Synthesize their energies into a single, fused archetypal concept based on the rule above.
+2.  Generate a list of 3 distinct "expression archetypes" (valences) that represent the different potential manifestations of this *combined* energy. The valences should be ordered along a spectrum from most harnessed (positive valence) to most unharnessed (negative) manifestations of this intense focus.
+3.  Format the final output as a JSON object with a single key "valences". This key should contain a list of objects, where each object has two keys: "archetype" (the name of the valence, e.g., "The Driven Visionary") and "description" (a brief, one-sentence explanation of what this expression represents).
+
+**CRITICAL INSTRUCTIONS:**
+*   DO NOT explain the rule or your process.
+*   Your response MUST be only the raw JSON object.
+
+**Components for Synthesis:**
+
+**Planets in Stellium:**
+[PLANET_LIST_DATA]
+
+**Sign:**
+[SIGN_DATA]
+"""
+
 # --- Stage 2: Manifestation Prompts ---
 PSYCHOLOGICAL_PATTERNS_PROMPT = """ 
 You are an expert archetypal astrologer. Your task is to describe the potential psychological patterns for an astrological signature as expressed through a specific, pre-defined valence.
@@ -703,7 +731,8 @@ VALENCE_PROMPTS = {
     'planet_aspect_angle': VALENCE_PROMPT_PLANET_ASPECT_ANGLE,
     'planet_aspect_node': VALENCE_PROMPT_PLANET_ASPECT_NODE,
     'node_aspect_angle': VALENCE_PROMPT_NODE_ASPECT_ANGLE,
-    'angle_in_sign': VALENCE_PROMPT_ANGLE_IN_SIGN 
+    'angle_in_sign': VALENCE_PROMPT_ANGLE_IN_SIGN,
+    'stellium_in_sign': VALENCE_PROMPT_STELLIUM_IN_SIGN 
 }
 
 MANIFESTATION_PROMPTS = {
@@ -730,7 +759,8 @@ FRAMEWORK_RULES = {
     "The Archetypal Imprint": {"name": "The Archetypal Imprint", "description": "This framework defines how a planet's core drive imprints upon, activates, or challenges one of the four fundamental pillars of the life structure."},
     "The Karmic Infusion": {"name": "The Karmic Infusion", "description": "This framework describes how a planetary drive infuses its energy into the user's evolutionary path."},
     "The Soul's Compass": {"name": "The Soul's Compass", "description": "This framework defines how the soul's evolutionary path (the Nodal Axis) is grounded in, expressed through, or challenged by the most tangible pillars of the life structure (the Angles)."},
-    "The Adverbial Signature (Extended for Angles)": {"name": "The Adverbial Signature (Extended for Angles)", "description": "The sign on a chart angle acts as an 'adjective' or adverbial signature, describing the tone, style, and conditions one experiences in that foundational area of life."} 
+    "The Adverbial Signature (Extended for Angles)": {"name": "The Adverbial Signature (Extended for Angles)", "description": "The sign on a chart angle acts as an 'adjective' or adverbial signature, describing the tone, style, and conditions one experiences in that foundational area of life."},
+    "The Principle of Focused Intensity": {"name": "The Principle of Focused Intensity", "description": "A stellium represents a powerful, fused concentration of planetary energies that creates an area of intense focus and core life purpose."}
 }
 
 ESSENTIAL_DIGNITIES = {
@@ -762,6 +792,12 @@ class PromptAssembler:
         """
         num_components = len(components)
         types = [c['type'] for c in components]
+
+        if (num_components >= 5 and  # Minimum for a 3-planet stellium (identifier + sign + 3 planets)
+            components[0].get('type') == 'complex_configurations' and components[0].get('id') == 'stellium' and
+            components[1].get('type') == 'zodiac_sign' and
+            all(comp.get('type') == 'planet' for comp in components[2:])):
+            return 'stellium_in_sign', "The Principle of Focused Intensity"
 
         if num_components == 2:
             if types == ['planet', 'zodiac_sign']: return 'planet_in_sign', "The Zodiacal Lens"
@@ -824,41 +860,55 @@ class PromptAssembler:
 
         # Prepare placeholder replacements
         replacements = {}
-        planet_count = 1
-        dignity_status = "N/A"
-        quality_data = "N/A"
-        
-        # Temporary storage for dignity calculation
-        planet_for_dignity, sign_for_dignity = None, None
 
-        for i, comp_data in enumerate(components_data):
-            comp_type = components_input[i]['type']
-            comp_id = components_input[i]['id']
+        if synthesis_type == 'stellium_in_sign':
+            # This block handles ONLY the stellium.
+            
+            # The first component in the list is the 'stellium' identifier, and we fetched its data.
+            # The second component is the sign.
+            sign_data = components_data[1] 
+            
+            # All subsequent components are the planets.
+            planet_list_data = components_data[2:]
 
-            if comp_type == 'planet':
-                # Handles prompts with [PLANET_1_DATA] and [PLANET_2_DATA]
-                key = f"[PLANET_{planet_count}_DATA]"
-                replacements[key] = json.dumps(comp_data)
-                if planet_count == 1: # Only assign the first planet for dignity calc
-                    planet_for_dignity = comp_id
-                planet_count += 1
-            elif comp_type == 'zodiac_sign':
-                replacements['[SIGN_DATA]'] = json.dumps(comp_data)
-                sign_for_dignity = comp_id
-            elif comp_type == 'house':
-                replacements['[HOUSE_DATA]'] = json.dumps(comp_data)
-                # **CORRECTED LOGIC**: Extract quality from the full house data object
-                quality_data = comp_data.get("quality", "N/A").capitalize()
-            elif comp_type == 'node': replacements['[NODE_DATA]'] = json.dumps(comp_data)
-            elif comp_type == 'angle': replacements['[ANGLE_DATA]'] = json.dumps(comp_data)
-            elif comp_type == 'dynamic': replacements['[ASPECT_DATA]'] = json.dumps(comp_data)
-        
-        # **CORRECTED LOGIC**: Derive dignity if applicable for the synthesis type
-        if synthesis_type == 'planet_in_sign' and planet_for_dignity and sign_for_dignity:
-            dignity_status = self._get_dignity_status(planet_for_dignity, sign_for_dignity)
+            replacements['[SIGN_DATA]'] = json.dumps(sign_data)
+            replacements['[PLANET_LIST_DATA]'] = json.dumps(planet_list_data, indent=2)
+        else: 
+            planet_count = 1
+            dignity_status = "N/A"
+            quality_data = "N/A"
+            
+            # Temporary storage for dignity calculation
+            planet_for_dignity, sign_for_dignity = None, None
 
-        replacements['[DIGNITY_STATUS]'] = dignity_status
-        replacements['[QUALITY_DATA]'] = quality_data
+            for i, comp_data in enumerate(components_data):
+                comp_type = components_input[i]['type']
+                comp_id = components_input[i]['id']
+
+                if comp_type == 'planet':
+                    # Handles prompts with [PLANET_1_DATA] and [PLANET_2_DATA]
+                    key = f"[PLANET_{planet_count}_DATA]"
+                    replacements[key] = json.dumps(comp_data)
+                    if planet_count == 1: # Only assign the first planet for dignity calc
+                        planet_for_dignity = comp_id
+                    planet_count += 1
+                elif comp_type == 'zodiac_sign':
+                    replacements['[SIGN_DATA]'] = json.dumps(comp_data)
+                    sign_for_dignity = comp_id
+                elif comp_type == 'house':
+                    replacements['[HOUSE_DATA]'] = json.dumps(comp_data)
+                    # **CORRECTED LOGIC**: Extract quality from the full house data object
+                    quality_data = comp_data.get("quality", "N/A").capitalize()
+                elif comp_type == 'node': replacements['[NODE_DATA]'] = json.dumps(comp_data)
+                elif comp_type == 'angle': replacements['[ANGLE_DATA]'] = json.dumps(comp_data)
+                elif comp_type == 'dynamic': replacements['[ASPECT_DATA]'] = json.dumps(comp_data)
+            
+            # **CORRECTED LOGIC**: Derive dignity if applicable for the synthesis type
+            if synthesis_type == 'planet_in_sign' and planet_for_dignity and sign_for_dignity:
+                dignity_status = self._get_dignity_status(planet_for_dignity, sign_for_dignity)
+
+            replacements['[DIGNITY_STATUS]'] = dignity_status
+            replacements['[QUALITY_DATA]'] = quality_data
 
         prompt_text = self._build_prompt_string(template, replacements)
 

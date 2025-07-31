@@ -692,21 +692,6 @@
         ],
         "comparative_dyads": {}
       }
-    },
-    {
-      "id": "stellium",
-      "name": "The Stellium",
-      "archetype": "The Concentration",
-      "display_content": {
-        "principle": "The Principle of Concentration & Emphasis",
-        "core_concept": "A Stellium is not an aspect, but a concentration of multiple (typically three or more) planets in a single sign or house. This creates an immense focus of energy and emphasis on that sign's archetypal themes or that house's domain of life, becoming a dominant and powerful theme in the natal chart."
-      },
-      "synthesis_components": {
-        "keywords_for_llm": [
-          "Concentration", "emphasis", "focus", "intensity", "complexity", "specialization", "overload", "powerhouse"
-        ],
-        "comparative_dyads": {}
-      }
     }
   ],
   "angles": [
@@ -814,5 +799,22 @@
           }
         }
       }
-    ]
+    ],
+  "complex_configurations": [
+    {
+      "id": "stellium",
+      "name": "The Stellium",
+      "archetype": "The Powerhouse",
+      "display_content": {
+        "principle": "The Principle of Focused Intensity and Archetypal Fusion",
+        "core_concept": "A Stellium is a powerful concentration of three or more planets in a single sign or house. The planetary drives involved do not act independently; they fuse into a single, complex, and potent archetypal force. This creates an overwhelming emphasis on the sign's themes or the house's life domain, making it a dominant chord in the chart. While this can manifest as immense talent and specialization, its intensity can also create subjective blind spots and a lack of balance, challenging the individual to wield its power consciously."
+      },
+      "synthesis_components": {
+        "keywords_for_llm": [
+          "Concentration", "emphasis", "focus", "intensity", "fusion", "synergy", "complexity", "specialization", "powerhouse", "obsession", "overload", "blind-spot"
+        ],
+        "comparative_dyads": {}
+      }
+    }
+]
 }
